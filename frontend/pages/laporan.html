@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Laporan</title>
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="sidebar-overlay"></div>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-logo">
+            <div class="logo-icon">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <div>
+              <h4>SIAKAD SD</h4>
+
+              <p>Rawa Gempol</p>
+            </div>
+          </div>
+
+          <ul class="sidebar-menu">
+            <li>
+              <a href="../index.html">
+                <i class="bi bi-grid"></i>
+
+                <span>Dashboard</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./guru.html">
+                <i class="bi bi-person-badge"></i>
+
+                <span>Data Guru</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./kelas.html">
+                <i class="bi bi-building-fill"></i>
+
+                <span>Data Kelas</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./siswa.html">
+                <i class="bi bi-people-fill"></i>
+
+                <span>Data Siswa</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./nilai.html">
+                <i class="bi bi-journal-text"></i>
+
+                <span>Data Nilai</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./kehadiran.html">
+                <i class="bi bi-calendar-check"></i>
+
+                <span>Data Kehadiran</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./spk-bantuan.html">
+                <i class="bi bi-gift"></i>
+
+                <span>SPK Bantuan</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="active">
+                <i class="bi bi-file-earmark-text"></i>
+
+                <span>Laporan</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-profile">
+            <div class="sidebar-profile-avatar">
+              <i class="bi bi-person-fill"></i>
+            </div>
+
+            <div>
+              <h5>Admin Sekolah</h5>
+
+              <p>Administrator</p>
+            </div>
+          </div>
+
+          <button class="sidebar-logout-btn" type="button" data-logout>
+            <i class="bi bi-box-arrow-right"></i>
+
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="navbar-custom">
+          <div class="navbar-left">
+            <button class="toggle-sidebar-btn" type="button" aria-label="Buka menu navigasi">
+              <i class="bi bi-list"></i>
+            </button>
+
+            <div class="navbar-title">
+              <h4>Sistem Informasi Akademik SDN Rawa Gempol</h4>
+            </div>
+          </div>
+
+          <div class="navbar-right">
+            <div class="navbar-date" aria-live="polite">
+              <i class="bi bi-calendar-event"></i>
+              <span data-current-date>Memuat tanggal...</span>
+            </div>
+          </div>
+        </header>
+
+        <section class="content">
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-title">
+                <h5>Laporan</h5>
+
+                <p>Preview laporan akademik dari data existing</p>
+              </div>
+
+              <div class="table-search"></div>
+            </div>
+
+            <div class="filter-section">
+              <select id="reportType" class="filter-select">
+                <option value="nilai">Laporan Nilai</option>
+                <option value="kehadiran">Laporan Kehadiran</option>
+                <option value="siswa">Laporan Data Siswa</option>
+                <option value="bantuan">Laporan SPK Bantuan</option>
+              </select>
+
+              <div class="filter-search">
+                <i class="bi bi-search"></i>
+
+                <input
+                  type="text"
+                  id="searchLaporan"
+                  placeholder="Cari data laporan..."
+                />
+              </div>
+
+              <select id="filterClass" class="filter-select">
+                <option value="">Pilih Kelas</option>
+              </select>
+
+              <select id="filterSubject" class="filter-select">
+                <option value="">Semua Mata Pelajaran</option>
+              </select>
+
+              <input id="filterMonth" class="filter-select" type="month" />
+
+              <select id="filterGender" class="filter-select">
+                <option value="">Semua Jenis Kelamin</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+
+              <select id="filterBantuanStatus" class="filter-select">
+                <option value="">Semua Status Bantuan</option>
+                <option value="Layak">Layak</option>
+                <option value="Dipertimbangkan">Dipertimbangkan</option>
+                <option value="Tidak Prioritas">Tidak Prioritas</option>
+              </select>
+
+              <button class="filter-reset-btn">
+                <i class="bi bi-arrow-clockwise"></i>
+
+                Reset Filter
+              </button>
+            </div>
+
+            <div class="mini-stats-grid">
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-blue">
+                  <i class="bi bi-file-earmark-text-fill"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Jenis Laporan</p>
+
+                  <h3 id="reportTitle">Nilai</h3>
+
+                  <span id="reportDescription">Preview data akademik</span>
+                </div>
+              </div>
+
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-green">
+                  <i class="bi bi-table"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Total Data</p>
+
+                  <h3 id="reportTotal">0</h3>
+
+                  <span>Setelah filter</span>
+                </div>
+              </div>
+
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-orange">
+                  <i class="bi bi-database-fill-check"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Kelas Dipilih</p>
+
+                  <h3 id="reportClassName">-</h3>
+
+                  <span>Sesuai filter kelas</span>
+                </div>
+              </div>
+
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-purple">
+                  <i class="bi bi-printer-fill"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Filter Aktif</p>
+
+                  <h3 id="reportFilterCount">0</h3>
+
+                  <span>Pencarian dan filter</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-top">
+              <div>
+                <h4>Preview Laporan</h4>
+
+                <p>Data laporan tampil realtime sesuai jenis dan filter</p>
+              </div>
+
+              <div class="table-top-action">
+                <button class="export-btn" id="exportExcelBtn">
+                  <i class="bi bi-file-earmark-excel-fill"></i>
+
+                  Export Excel
+                </button>
+
+                <button class="export-btn" id="printPreviewBtn">
+                  <i class="bi bi-printer-fill"></i>
+
+                  Print Preview
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead id="laporanTableHead"></thead>
+
+                <tbody id="laporanTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-pagination" id="pagination"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+    <script type="module" src="../assets/js/app.js"></script>
+    <script type="module" src="../assets/js/pages/laporan.js"></script>
+  </body>
+</html>

@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>SIAKAD SD Rawa Gempol</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="./assets/css/main.css" />
+  </head>
+
+  <body>
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay"></div>
+    <!-- APP -->
+    <div class="app">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <!-- Logo -->
+          <div class="sidebar-header">
+            <h4>SIAKAD</h4>
+          </div>
+
+          <!-- Menu -->
+          <ul class="sidebar-menu">
+            <li>
+              <a href="#" class="active">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="./pages/guru.html">
+                <i class="bi bi-person-badge"></i>
+
+                <span>Data Guru</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./pages/siswa.html">
+                <i class="bi bi-people"></i>
+
+                <span>Data Siswa</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./pages/kelas.html">
+                <i class="bi bi-building-fill"></i>
+
+                <span>Data Kelas</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./pages/nilai.html">
+                <i class="bi bi-journal-text"></i>
+
+                <span>Nilai</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./pages/kehadiran.html">
+                <i class="bi bi-calendar-check"></i>
+
+                <span>Kehadiran</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./pages/spk-bantuan.html">
+                <i class="bi bi-award"></i>
+
+                <span>SPK Bantuan</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./pages/laporan.html">
+                <i class="bi bi-file-earmark-bar-graph"></i>
+
+                <span>Laporan</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="sidebar-logout-btn" type="button" data-logout>
+            <i class="bi bi-box-arrow-right"></i>
+
+            Logout
+          </button>
+
+          <button class="btn btn-light sidebar-close-btn" type="button">
+            <i class="bi bi-chevron-left"></i>
+
+            Tutup Sidebar
+          </button>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <!-- NAVBAR -->
+        <header class="navbar-custom">
+          <div class="navbar-left">
+            <button
+              class="toggle-sidebar-btn"
+              type="button"
+              aria-label="Buka menu navigasi"
+            >
+              <i class="bi bi-list"></i>
+            </button>
+
+            <div class="navbar-title">
+              <h4>Sistem Informasi Akademik SDN Rawa Gempol</h4>
+            </div>
+          </div>
+
+          <div class="navbar-right">
+            <div class="navbar-date" aria-live="polite">
+              <i class="bi bi-calendar-event"></i>
+              <span data-current-date>Memuat tanggal...</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- CONTENT -->
+        <section class="content dashboard-page">
+          <!-- IDENTITAS SEKOLAH -->
+          <div class="school-identity-top">
+            <div class="school-identity-main">
+              <div class="school-identity-logo">
+                <i class="bi bi-building"></i>
+              </div>
+              <div class="school-identity-text">
+                <span class="school-identity-label">Identitas Sekolah</span>
+                <h3>SDN Rawa Gempol</h3>
+                <p>
+                  <i class="bi bi-person-badge"></i>
+                  Kepala Sekolah:
+                  <strong>Dedah Suhartini S.Pd., SD</strong>
+                </p>
+              </div>
+            </div>
+            <div class="school-identity-badges">
+              <span class="school-identity-badge">
+                <i class="bi bi-calendar3"></i>
+                2025 / 2026
+              </span>
+              <span class="school-identity-badge badge-green">
+                <i class="bi bi-check-circle-fill"></i>
+                Aktif
+              </span>
+              <span class="school-identity-badge badge-purple">
+                <i class="bi bi-award"></i>
+                Akreditasi A
+              </span>
+            </div>
+          </div>
+
+          <!-- STATISTIC -->
+          <div class="row g-4 dashboard-stats-row">
+            <!-- CARD 1 -->
+            <div class="col-md-6 col-xl-3">
+              <div class="stat-card stat-card-modern stat-card-wali">
+                <div class="stat-card-left">
+                  <div class="stat-icon icon-blue">
+                    <i class="bi bi-people-fill"></i>
+                  </div>
+
+                  <div class="stat-info">
+                    <p id="totalStudentsLabel">Total Siswa</p>
+
+                    <h3 id="totalStudents">0</h3>
+
+                    <div class="stat-extra" id="totalStudentsExtra">
+                      Data siswa tersimpan
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 2 (Admin) -->
+            <div class="col-md-6 col-xl-3 dashboard-admin-only">
+              <div class="stat-card stat-card-modern">
+                <div class="stat-card-left">
+                  <div class="stat-icon icon-green">
+                    <i class="bi bi-mortarboard-fill"></i>
+                  </div>
+
+                  <div class="stat-info">
+                    <p>Total Guru</p>
+
+                    <h3 id="totalGuru">0</h3>
+
+                    <div class="stat-extra">Data guru tersimpan</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 3 (Admin) -->
+            <div class="col-md-6 col-xl-3 dashboard-admin-only">
+              <div class="stat-card stat-card-modern">
+                <div class="stat-card-left">
+                  <div class="stat-icon icon-orange">
+                    <i class="bi bi-building-fill"></i>
+                  </div>
+
+                  <div class="stat-info">
+                    <p>Total Kelas Aktif</p>
+
+                    <h3 id="totalActiveKelas">0</h3>
+
+                    <div class="stat-extra">Kelas berstatus aktif</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 4 (Admin) -->
+            <div class="col-md-6 col-xl-3 dashboard-admin-only">
+              <div class="stat-card stat-card-modern">
+                <div class="stat-card-left">
+                  <div class="stat-icon icon-purple">
+                    <i class="bi bi-clipboard2-check-fill"></i>
+                  </div>
+
+                  <div class="stat-info">
+                    <p>Total Wali Kelas</p>
+
+                    <h3 id="totalHomeroomGuru">0</h3>
+
+                    <div class="stat-extra">Guru dengan tugas wali kelas</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 2 (Wali) -->
+            <div class="col-md-6 col-xl-3 dashboard-wali-only">
+              <div class="stat-card stat-card-wali">
+                <div class="stat-card-left">
+                  <div class="stat-icon icon-green">
+                    <i class="bi bi-gender-male"></i>
+                  </div>
+
+                  <div class="stat-info">
+                    <p>Siswa Laki-laki</p>
+
+                    <h3 id="waliMaleStudents">0</h3>
+
+                    <div class="stat-extra" id="waliMalePercent">0% dari kelas</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 3 (Wali) -->
+            <div class="col-md-6 col-xl-3 dashboard-wali-only">
+              <div class="stat-card stat-card-wali">
+                <div class="stat-card-left">
+                  <div class="stat-icon icon-pink">
+                    <i class="bi bi-gender-female"></i>
+                  </div>
+
+                  <div class="stat-info">
+                    <p>Siswa Perempuan</p>
+
+                    <h3 id="waliFemaleStudents">0</h3>
+
+                    <div class="stat-extra" id="waliFemalePercent">0% dari kelas</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 4 (Wali) -->
+            <div class="col-md-6 col-xl-3 dashboard-wali-only">
+              <div class="stat-card stat-card-wali">
+                <div class="stat-card-left">
+                  <div class="stat-icon icon-orange">
+                    <i class="bi bi-gift-fill"></i>
+                  </div>
+
+                  <div class="stat-info">
+                    <p>Layak Bantuan</p>
+
+                    <h3 id="waliBantuanLayak">0</h3>
+
+                    <div class="stat-extra">Berdasarkan SPK kelas</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DASHBOARD SECTION -->
+          <div class="dashboard-section">
+            <div class="admin-dashboard-hero dashboard-admin-only">
+              <div class="admin-hero-content">
+                <span class="admin-hero-badge">Administrator</span>
+                <h3>Dashboard SDN Rawa Gempol</h3>
+                <p>Monitoring data akademik dan informasi sekolah secara menyeluruh.</p>
+              </div>
+              <div class="admin-hero-stats">
+                <div class="admin-hero-stat">
+                  <i class="bi bi-building"></i>
+                  <span>SDN Rawa Gempol</span>
+                </div>
+                <div class="admin-hero-stat">
+                  <i class="bi bi-calendar3"></i>
+                  <span>2025 / 2026</span>
+                </div>
+                <div class="admin-hero-stat">
+                  <i class="bi bi-award"></i>
+                  <span>Akreditasi A</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-header">
+              <div class="dashboard-card-title">
+                <h2 id="dashboardMainTitle">Dashboard Sekolah</h2>
+                <p id="dashboardMainDescription">
+                  Ringkasan informasi penting sekolah dan data akademik yang
+                  dirancang agar mudah dibaca dan dapat diakses dengan cepat.
+                </p>
+              </div>
+            </div>
+
+            <div class="wali-dashboard-hero dashboard-wali-only">
+              <div class="wali-hero-content">
+                <span class="wali-hero-badge">Wali Kelas</span>
+                <h3 id="waliHeroClassName">Kelas</h3>
+                <p id="waliHeroTeacher">Guru wali kelas</p>
+              </div>
+              <div class="wali-hero-meta">
+                <div class="wali-meta-item">
+                  <i class="bi bi-calendar3"></i>
+                  <span>2025 / 2026</span>
+                </div>
+                <div class="wali-meta-item">
+                  <i class="bi bi-building"></i>
+                  <span id="waliHeroSchool">SDN Rawa Gempol</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-4 align-items-stretch dashboard-main-row">
+              <div class="col-12 dashboard-chart-col">
+                <div class="dashboard-card dashboard-chart-card dashboard-card-modern">
+                  <div class="dashboard-card-accent dashboard-accent-indigo">
+                    <div class="dashboard-card-accent-icon">
+                      <i class="bi bi-bar-chart-fill"></i>
+                    </div>
+                    <div>
+                      <h5 id="studentChartTitle">Statistik Siswa</h5>
+                      <p id="studentChartDescription">
+                        Jumlah siswa per kelas untuk melihat distribusi data
+                        secara cepat.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="chart-container" id="studentChartWrap">
+                    <canvas id="studentChart"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-4 dashboard-wali-only dashboard-wali-class-col">
+                <div class="dashboard-card wali-class-card">
+                  <div class="dashboard-card-header">
+                    <div class="dashboard-card-title">
+                      <h5>Ringkasan Kelas</h5>
+                      <p>Informasi rombel yang sedang diampu.</p>
+                    </div>
+                  </div>
+
+                  <div class="wali-class-summary">
+                    <div class="wali-summary-item">
+                      <span>Nama Kelas</span>
+                      <strong id="waliSummaryClassName">-</strong>
+                    </div>
+                    <div class="wali-summary-item">
+                      <span>Tingkat</span>
+                      <strong id="waliSummaryLevel">-</strong>
+                    </div>
+                    <div class="wali-summary-item">
+                      <span>Label Rombel</span>
+                      <strong id="waliSummaryLabel">-</strong>
+                    </div>
+                    <div class="wali-summary-item">
+                      <span>Status</span>
+                      <strong id="waliSummaryStatus">-</strong>
+                    </div>
+                  </div>
+
+                  <div class="wali-quick-links">
+                    <a href="./pages/siswa.html" class="wali-quick-link">
+                      <i class="bi bi-people-fill"></i>
+                      Data Siswa
+                    </a>
+                    <a href="./pages/nilai.html" class="wali-quick-link">
+                      <i class="bi bi-journal-text"></i>
+                      Nilai
+                    </a>
+                    <a href="./pages/kehadiran.html" class="wali-quick-link">
+                      <i class="bi bi-calendar-check"></i>
+                      Kehadiran
+                    </a>
+                    <a href="./pages/spk-bantuan.html" class="wali-quick-link">
+                      <i class="bi bi-gift"></i>
+                      SPK Bantuan
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-4 mt-4 align-items-stretch dashboard-school-row">
+              <div class="col-12 col-lg-6">
+                <div class="dashboard-card dashboard-card-modern vision-card">
+                  <div class="dashboard-card-accent dashboard-accent-green">
+                    <div class="dashboard-card-accent-icon">
+                      <i class="bi bi-eye-fill"></i>
+                    </div>
+                    <div>
+                      <h5>Visi Sekolah</h5>
+                      <p>Pedoman utama dalam pendidikan dan karakter siswa.</p>
+                    </div>
+                  </div>
+
+                  <div class="vision-text">
+                    “Unggul dalam prestasi, berakhlak mulia, disiplin, mandiri
+                    dan kreatif berdasarkan imtek dan imtak”
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <div class="dashboard-card dashboard-card-modern mission-card">
+                  <div class="dashboard-card-accent dashboard-accent-orange">
+                    <div class="dashboard-card-accent-icon">
+                      <i class="bi bi-list-check"></i>
+                    </div>
+                    <div>
+                      <h5>Misi Sekolah</h5>
+                      <p>Tindakan nyata untuk mencapai visi sekolah.</p>
+                    </div>
+                  </div>
+
+                  <ol class="mission-list">
+                    <li>
+                      Memberikan dasar-dasar keimanan dan ketakwaan terhadap
+                      Tuhan Yang Maha Esa
+                    </li>
+                    <li>
+                      Memupuk/menumbuh kembangkan rasa cinta terhadap sesama
+                      manusia dan lingkungannya
+                    </li>
+                    <li>Membiasakan siswa hidup bersih</li>
+                    <li>Menerapkan sikap disiplin dan bertanggung jawab</li>
+                    <li>Mengembangkan nilai-nilai budi pekerti luhur</li>
+                    <li>Meningkatkan profesionalisme guru/personil</li>
+                    <li>
+                      Meningkatkan kesadaran untuk memelihara dan menciptakan
+                      lingkungan sekolah yang sehat dan asri
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-4 mt-4 dashboard-admin-only">
+              <div class="col-12">
+                <div class="dashboard-card dashboard-card-modern">
+                  <div class="dashboard-card-accent dashboard-accent-pink">
+                    <div class="dashboard-card-accent-icon">
+                      <i class="bi bi-pie-chart-fill"></i>
+                    </div>
+                    <div>
+                      <h5>Statistik Gender</h5>
+                      <p>
+                        Ringkasan perbandingan siswa laki-laki dan perempuan.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="dashboard-gender-grid">
+                    <div class="dashboard-gender-box gender-male-box">
+                      <div class="rank-badge">
+                        <i class="bi bi-gender-male"></i>
+                      </div>
+                      <div>
+                        <span>Laki-laki</span>
+                        <strong id="maleStudents">0</strong>
+                      </div>
+                    </div>
+                    <div class="dashboard-gender-box gender-female-box">
+                      <div class="rank-badge rank-badge-female">
+                        <i class="bi bi-gender-female"></i>
+                      </div>
+                      <div>
+                        <span>Perempuan</span>
+                        <strong id="femaleStudents">0</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-4 mt-4 dashboard-wali-only">
+              <div class="col-12 col-lg-5">
+                <div class="dashboard-card dashboard-chart-card dashboard-gender-card">
+                  <div class="dashboard-card-header">
+                    <div class="dashboard-card-title">
+                      <h5>Komposisi Gender</h5>
+                      <p>Perbandingan siswa laki-laki dan perempuan di kelas.</p>
+                    </div>
+                  </div>
+
+                  <div class="chart-container chart-container-compact">
+                    <canvas id="genderChart"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-7">
+                <div class="dashboard-card">
+                  <div class="dashboard-card-header">
+                    <div class="dashboard-card-title">
+                      <h5>Akses Cepat</h5>
+                      <p>Menu utama pengelolaan data kelas Anda.</p>
+                    </div>
+                  </div>
+
+                  <div class="wali-menu-grid">
+                    <a href="./pages/siswa.html" class="wali-menu-card menu-blue">
+                      <i class="bi bi-people-fill"></i>
+                      <span>Data Siswa</span>
+                    </a>
+                    <a href="./pages/nilai.html" class="wali-menu-card menu-green">
+                      <i class="bi bi-journal-text"></i>
+                      <span>Nilai</span>
+                    </a>
+                    <a href="./pages/kehadiran.html" class="wali-menu-card menu-orange">
+                      <i class="bi bi-calendar-check"></i>
+                      <span>Kehadiran</span>
+                    </a>
+                    <a href="./pages/spk-bantuan.html" class="wali-menu-card menu-purple">
+                      <i class="bi bi-gift"></i>
+                      <span>SPK Bantuan</span>
+                    </a>
+                    <a href="./pages/laporan.html" class="wali-menu-card menu-pink">
+                      <i class="bi bi-file-earmark-bar-graph"></i>
+                      <span>Laporan</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="./assets/js/app.js"></script>
+    <!-- Dashboard JS -->
+    <script type="module" src="./assets/js/pages/dashboard.js"></script>
+  </body>
+</html>

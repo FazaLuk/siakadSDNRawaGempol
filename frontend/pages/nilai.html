@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Data Nilai</title>
+
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="sidebar-overlay"></div>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-logo">
+            <div class="logo-icon">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <div>
+              <h4>SIAKAD SD</h4>
+
+              <p>Rawa Gempol</p>
+            </div>
+          </div>
+
+          <ul class="sidebar-menu">
+            <li>
+              <a href="../index.html">
+                <i class="bi bi-grid"></i>
+
+                <span>Dashboard</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./guru.html">
+                <i class="bi bi-person-badge"></i>
+
+                <span>Data Guru</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./kelas.html">
+                <i class="bi bi-building-fill"></i>
+
+                <span>Data Kelas</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./siswa.html">
+                <i class="bi bi-people-fill"></i>
+
+                <span>Data Siswa</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="active">
+                <i class="bi bi-journal-text"></i>
+
+                <span>Data Nilai</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./kehadiran.html">
+                <i class="bi bi-calendar-check"></i>
+
+                <span>Data Kehadiran</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./spk-bantuan.html">
+                <i class="bi bi-gift"></i>
+
+                <span>SPK Bantuan</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./laporan.html">
+                <i class="bi bi-file-earmark-text"></i>
+
+                <span>Laporan</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-profile">
+            <div class="sidebar-profile-avatar">
+              <i class="bi bi-person-fill"></i>
+            </div>
+
+            <div>
+              <h5>Admin Sekolah</h5>
+
+              <p>Administrator</p>
+            </div>
+          </div>
+
+          <button class="sidebar-logout-btn" type="button" data-logout>
+            <i class="bi bi-box-arrow-right"></i>
+
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="navbar-custom">
+          <div class="navbar-left">
+            <button class="toggle-sidebar-btn" type="button" aria-label="Buka menu navigasi">
+              <i class="bi bi-list"></i>
+            </button>
+
+            <div class="navbar-title">
+              <h4>Sistem Informasi Akademik SDN Rawa Gempol</h4>
+            </div>
+          </div>
+
+          <div class="navbar-right">
+            <div class="navbar-date" aria-live="polite">
+              <i class="bi bi-calendar-event"></i>
+              <span data-current-date>Memuat tanggal...</span>
+            </div>
+          </div>
+        </header>
+
+        <section class="content">
+          <div class="table-container">
+            <div class="table-header">
+              <div class="table-title">
+                <h5>Daftar Nilai</h5>
+
+                <p>Kelola data nilai siswa SD Rawa Gempol</p>
+              </div>
+
+              <div class="table-search"></div>
+            </div>
+
+            <div class="filter-section">
+              <div class="filter-search">
+                <i class="bi bi-search"></i>
+
+                <input
+                  type="text"
+                  id="searchNilai"
+                  placeholder="Cari siswa, kelas, guru, atau mata pelajaran..."
+                />
+              </div>
+
+              <select id="filterClass" class="filter-select">
+                <option value="">Semua Kelas</option>
+              </select>
+
+              <button class="filter-reset-btn">
+                <i class="bi bi-arrow-clockwise"></i>
+
+                Reset Filter
+              </button>
+            </div>
+
+            <div class="mini-stats-grid">
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-blue">
+                  <i class="bi bi-journal-check"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Total Nilai</p>
+
+                  <h3 id="totalNilaiCard">0</h3>
+
+                  <span>Data tersimpan</span>
+                </div>
+              </div>
+
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-green">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Nilai Tertinggi</p>
+
+                  <h3 id="nilaiTertinggiCard">-</h3>
+
+                  <span>Rata-rata tertinggi</span>
+                </div>
+              </div>
+
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-orange">
+                  <i class="bi bi-person-badge-fill"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Nilai Terendah</p>
+
+                  <h3 id="nilaiTerendahCard">-</h3>
+
+                  <span>Rata-rata terendah</span>
+                </div>
+              </div>
+
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-purple">
+                  <i class="bi bi-calculator-fill"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Rata-rata Akademik</p>
+
+                  <h3 id="rataAkademikCard">-</h3>
+
+                  <span>Tugas, UTS, UAS</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-top">
+              <div>
+                <h4>Daftar Nilai</h4>
+
+                <p>Menampilkan seluruh data nilai siswa</p>
+              </div>
+
+              <div class="table-top-action">
+                <button class="add-btn" id="openNilaiModal">
+                  <i class="bi bi-plus-lg"></i>
+
+                  Tambah Nilai
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Icon</th>
+                    <th>
+                      <div class="th-content">
+                        Nama Siswa
+                        <i class="bi bi-arrow-down-up"></i>
+                      </div>
+                    </th>
+                    <th>Kelas</th>
+                    <th>Wali Kelas</th>
+                    <th>Mata Pelajaran</th>
+                    <th>Tugas</th>
+                    <th>UTS</th>
+                    <th>UAS</th>
+                    <th>Rata-rata</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+
+                <tbody id="nilaiTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-pagination" id="pagination"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="student-modal" id="nilaiModal">
+      <div class="modal-overlay" id="closeModal"></div>
+
+      <div class="student-modal-content">
+        <div class="student-modal-header">
+          <div>
+            <h3>Tambah Nilai</h3>
+
+            <p>Tambahkan data nilai siswa</p>
+          </div>
+
+          <button class="modal-close" id="closeModalBtn">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="student-modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Wali Kelas</label>
+
+              <select id="nilaiGuruId">
+                <option value="">Pilih wali kelas</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Kelas</label>
+
+              <input
+                type="text"
+                id="nilaiClassName"
+                placeholder="Kelas otomatis tampil"
+                disabled
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Cari Siswa</label>
+
+              <input
+                type="text"
+                id="nilaiStudentSearch"
+                placeholder="Cari nama siswa di kelas wali"
+                disabled
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Siswa</label>
+
+              <select id="nilaiStudentId" disabled>
+                <option value="">Pilih wali kelas terlebih dahulu</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Mata Pelajaran</label>
+
+              <select id="nilaiSubject">
+                <option value="">Pilih mata pelajaran</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Nilai Tugas</label>
+
+              <input
+                type="text"
+                id="nilaiTask"
+                inputmode="decimal"
+                placeholder="0 - 100"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Nilai UTS</label>
+
+              <input
+                type="text"
+                id="nilaiUts"
+                inputmode="decimal"
+                placeholder="0 - 100"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Nilai UAS</label>
+
+              <input
+                type="text"
+                id="nilaiUas"
+                inputmode="decimal"
+                placeholder="0 - 100"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Rata-rata</label>
+
+              <input
+                type="text"
+                id="nilaiAverage"
+                placeholder="Otomatis"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="student-modal-footer">
+          <button class="secondary-btn" id="cancelModal">Batal</button>
+          <button class="primary-btn" id="saveNilaiBtn">Simpan Nilai</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../assets/js/app.js"></script>
+    <script type="module" src="../assets/js/pages/nilai.js"></script>
+  </body>
+</html>

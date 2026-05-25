@@ -1,0 +1,319 @@
+/* =========================
+   SIDEBAR
+========================== */
+
+.sidebar {
+  width: 280px;
+
+  height: 100vh;
+
+  background: var(--white-color);
+
+  border-right: 1px solid #f1f5f9;
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  padding: 24px;
+
+  transition: var(--transition);
+}
+
+/* =========================
+   LOGO
+========================== */
+
+.sidebar-logo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 40px;
+}
+
+/* =========================
+   LOGO ICON
+========================== */
+
+.logo-icon {
+  width: 62px;
+
+  height: 62px;
+
+  border-radius: 18px;
+
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 28px;
+}
+
+/* =========================
+   LOGO TEXT
+========================== */
+
+.sidebar-logo h4 {
+  margin: 0;
+
+  font-size: 24px;
+
+  font-weight: 700;
+}
+
+.sidebar-logo p {
+  margin: 4px 0 0;
+
+  color: var(--text-light);
+}
+
+/* =========================
+   MENU
+========================== */
+
+.sidebar-menu {
+  list-style: none;
+
+  padding: 0;
+
+  margin: 0;
+}
+
+/* =========================
+   MENU ITEM
+========================== */
+
+.sidebar-menu li {
+  margin-bottom: 10px;
+}
+
+/* =========================
+   MENU LINK
+========================== */
+
+.sidebar-menu a {
+  height: 58px;
+
+  border-radius: 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 0 18px;
+
+  text-decoration: none;
+
+  color: var(--text-color);
+
+  font-weight: 500;
+
+  transition: var(--transition);
+}
+
+/* =========================
+   ICON
+========================== */
+
+.sidebar-menu a i {
+  font-size: 20px;
+}
+
+/* =========================
+   HOVER
+========================== */
+
+.sidebar-menu a:hover {
+  background: #eff6ff;
+
+  color: var(--primary-color);
+}
+
+/* =========================
+   ACTIVE
+========================== */
+
+.sidebar-menu a.active {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+
+  color: white;
+
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+}
+
+/* =========================
+   PROFILE
+========================== */
+
+.sidebar-profile {
+  background: #f8fafc;
+
+  border-radius: 18px;
+
+  padding: 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+/* =========================
+   PROFILE AVATAR
+========================== */
+
+.sidebar-profile-avatar {
+  width: 54px;
+
+  height: 54px;
+
+  border-radius: 50%;
+
+  background: #dbeafe;
+
+  color: var(--primary-color);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 24px;
+}
+
+/* =========================
+   PROFILE TEXT
+========================== */
+
+.sidebar-profile h5 {
+  margin: 0;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+.sidebar-profile p {
+  margin: 4px 0 0;
+
+  color: var(--text-light);
+
+  font-size: 13px;
+}
+
+.sidebar-bottom,
+.sidebar-footer {
+  display: grid;
+
+  gap: 12px;
+}
+
+.sidebar-logout-btn {
+  min-height: 48px;
+
+  border-radius: 14px;
+
+  background: #fee2e2;
+
+  color: var(--danger-color);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  font-weight: 700;
+
+  transition: var(--transition);
+}
+
+.sidebar-logout-btn:hover {
+  background: var(--danger-color);
+
+  color: var(--white-color);
+}
+
+/* =========================
+   MAIN CONTENT
+========================== */
+
+.main-content {
+  margin-left: 280px;
+
+  min-height: 100vh;
+
+  background: #f8fafc;
+}
+
+/* =========================
+   SIDEBAR ACTIVE
+========================== */
+
+.sidebar.active {
+  left: 0;
+}
+
+/* =========================
+   OVERLAY
+========================== */
+
+.sidebar-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  z-index: 998;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition: var(--transition);
+}
+
+/* =========================
+   OVERLAY ACTIVE
+========================== */
+
+.sidebar-overlay.active {
+  opacity: 1;
+
+  visibility: visible;
+}
+
+/* =========================
+   SIDEBAR COLLAPSED (DESKTOP)
+========================== */
+
+body.sidebar-collapsed .sidebar {
+  transform: translateX(calc(-100% - 48px));
+}
+
+body.sidebar-collapsed .main-content {
+  margin-left: 0;
+}

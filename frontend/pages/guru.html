@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Data Guru</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay"></div>
+    <div class="app">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <!-- TOP -->
+        <div class="sidebar-top">
+          <!-- LOGO -->
+          <div class="sidebar-logo">
+            <div class="logo-icon">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <div>
+              <h4>SIAKAD SD</h4>
+
+              <p>Rawa Gempol</p>
+            </div>
+          </div>
+
+          <!-- MENU -->
+          <ul class="sidebar-menu">
+            <li>
+              <a href="../index.html">
+                <i class="bi bi-grid"></i>
+
+                <span>Dashboard</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="active">
+                <i class="bi bi-person-badge"></i>
+
+                <span>Data Guru</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./kelas.html">
+                <i class="bi bi-building-fill"></i>
+
+                <span>Data Kelas</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./siswa.html">
+                <i class="bi bi-people-fill"></i>
+
+                <span>Data Siswa</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./nilai.html">
+                <i class="bi bi-journal-text"></i>
+
+                <span>Data Nilai</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./kehadiran.html">
+                <i class="bi bi-calendar-check"></i>
+
+                <span>Data Kehadiran</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./spk-bantuan.html">
+                <i class="bi bi-gift"></i>
+
+                <span>SPK Bantuan</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="./laporan.html">
+                <i class="bi bi-file-earmark-text"></i>
+
+                <span>Laporan</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- BOTTOM -->
+        <div class="sidebar-bottom">
+          <div class="sidebar-profile">
+            <div class="sidebar-profile-avatar">
+              <i class="bi bi-person-fill"></i>
+            </div>
+
+            <div>
+              <h5>Admin Sekolah</h5>
+
+              <p>Administrator</p>
+            </div>
+          </div>
+
+          <button class="sidebar-logout-btn" type="button" data-logout>
+            <i class="bi bi-box-arrow-right"></i>
+
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main-content">
+        <!-- NAVBAR -->
+        <header class="navbar-custom">
+          <div class="navbar-left">
+            <button
+              class="toggle-sidebar-btn"
+              type="button"
+              aria-label="Buka menu navigasi"
+            >
+              <i class="bi bi-list"></i>
+            </button>
+
+            <div class="navbar-title">
+              <h4>Sistem Informasi Akademik SDN Rawa Gempol</h4>
+            </div>
+          </div>
+
+          <div class="navbar-right">
+            <div class="navbar-date" aria-live="polite">
+              <i class="bi bi-calendar-event"></i>
+              <span data-current-date>Memuat tanggal...</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- CONTENT -->
+        <section class="content">
+          <div class="table-container">
+            <!-- HEADER -->
+            <div class="table-header">
+              <div class="table-title">
+                <h5>Daftar Guru</h5>
+
+                <p>Kelola data guru SD Rawa Gempol</p>
+              </div>
+
+              <div class="table-search"></div>
+            </div>
+
+            <!-- FILTER SECTION -->
+            <div class="filter-section">
+              <div class="filter-search">
+                <i class="bi bi-search"></i>
+
+                <input
+                  type="text"
+                  id="searchGuru"
+                  placeholder="Cari guru (NIP, nama, atau mapel)..."
+                />
+              </div>
+
+              <select id="filterType" class="filter-select">
+                <option value="">Semua Jenis Guru</option>
+                <option value="Guru Mapel">Guru Mapel</option>
+                <option value="Wali Kelas">Wali Kelas</option>
+                <option value="Wali Kelas & Guru Mapel">
+                  Wali Kelas & Guru Mapel
+                </option>
+              </select>
+
+              <select id="filterGender" class="filter-select">
+                <option value="">Semua Jenis Kelamin</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+
+              <button class="filter-reset-btn">
+                <i class="bi bi-arrow-clockwise"></i>
+
+                Reset Filter
+              </button>
+            </div>
+
+            <!-- MINI STATS -->
+            <div class="mini-stats-grid">
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-blue">
+                  <i class="bi bi-person-badge-fill"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Total Guru</p>
+
+                  <h3 id="totalGuruCard">0</h3>
+
+                  <span>Guru aktif</span>
+                </div>
+              </div>
+
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-green">
+                  <i class="bi bi-house-door-fill"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Wali Kelas</p>
+
+                  <h3 id="waliKelasCard">0</h3>
+
+                  <span>Setiap rombel aktif</span>
+                </div>
+              </div>
+
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-orange">
+                  <i class="bi bi-journal-bookmark-fill"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Guru Mapel</p>
+
+                  <h3 id="guruMapelCard">0</h3>
+
+                  <span>Mata pelajaran aktif</span>
+                </div>
+              </div>
+
+              <div class="mini-stat-card">
+                <div class="mini-stat-icon icon-purple">
+                  <i class="bi bi-mortarboard-fill"></i>
+                </div>
+
+                <div class="mini-stat-content">
+                  <p>Total Mata Pelajaran</p>
+
+                  <h3 id="totalMapelCard">0</h3>
+
+                  <span>Dari guru mapel</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- TABLE TOP -->
+            <div class="table-top">
+              <div>
+                <h4>Daftar Guru</h4>
+
+                <p>Menampilkan seluruh data guru aktif</p>
+              </div>
+
+              <div class="table-top-action">
+                <button class="add-btn" id="openGuruModal">
+                  <i class="bi bi-plus-lg"></i>
+
+                  Tambah Guru
+                </button>
+              </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Foto</th>
+                    <th>NIP</th>
+                    <th>
+                      <div class="th-content">
+                        Nama Guru
+                        <i class="bi bi-arrow-down-up"></i>
+                      </div>
+                    </th>
+                    <th>Jenis Guru</th>
+                    <th>Mata Pelajaran</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                    <th>Jenis Kelamin</th>
+                    <th>No. HP</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+
+                <tbody id="guruTableBody"></tbody>
+              </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="table-pagination" id="pagination"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- =========================
+     GURU MODAL
+========================== -->
+
+    <div class="student-modal" id="guruModal">
+      <div class="modal-overlay" id="closeModal"></div>
+
+      <div class="student-modal-content">
+        <div class="student-modal-header">
+          <div>
+            <h3>Tambah Guru</h3>
+
+            <p>Tambahkan data guru baru</p>
+          </div>
+
+          <button class="modal-close" id="closeModalBtn">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="student-modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nama Guru</label>
+
+              <input
+                type="text"
+                id="guruName"
+                placeholder="Masukkan nama guru"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>NIP</label>
+
+              <input
+                type="text"
+                id="guruNip"
+                maxlength="18"
+                inputmode="numeric"
+                autocomplete="off"
+                placeholder="Masukkan 18 digit NIP"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Jenis Guru</label>
+
+              <select id="guruType">
+                <option value="">Pilih jenis guru</option>
+                <option>Guru Mapel</option>
+                <option>Wali Kelas</option>
+                <option>Wali Kelas & Guru Mapel</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="guruSubjectGroup" hidden>
+              <label>Mata Pelajaran</label>
+
+              <input
+                type="text"
+                id="guruSubject"
+                placeholder="Contoh: Matematika, Bahasa Inggris"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Jenis Kelamin</label>
+
+              <select id="guruGender">
+                <option value="">Pilih gender</option>
+                <option>Laki-laki</option>
+                <option>Perempuan</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>No. HP</label>
+
+              <input
+                type="text"
+                id="guruPhone"
+                placeholder="Masukkan nomor HP"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Username (Login)</label>
+
+              <input
+                type="text"
+                id="guruUsername"
+                placeholder="Masukkan username untuk login"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Password (Login)</label>
+
+              <input
+                type="password"
+                id="guruPassword"
+                placeholder="Masukkan password untuk login"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Role Login</label>
+
+              <select id="guruRole">
+                <option value="guru">Guru Mapel</option>
+                <option value="wali_kelas">Wali Kelas</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-modal-footer">
+          <button class="secondary-btn" id="cancelModal">Batal</button>
+          <button class="primary-btn" id="saveGuruBtn">Simpan Guru</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================
+     DETAIL GURU MODAL
+========================== -->
+
+    <div class="student-modal" id="guruDetailModal">
+      <div class="modal-overlay" id="closeGuruDetailModal"></div>
+
+      <div class="student-modal-content">
+        <div class="student-modal-header">
+          <div>
+            <h3>Detail Guru</h3>
+
+            <p>Informasi lengkap data guru</p>
+          </div>
+
+          <button class="modal-close" id="closeGuruDetailModalBtn">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="student-modal-body">
+          <div class="teacher-detail">
+            <div class="teacher-detail-profile">
+              <div class="teacher-detail-avatar">
+                <i class="bi bi-person-badge-fill"></i>
+              </div>
+
+              <div>
+                <h4 id="detailGuruName">-</h4>
+
+                <p id="detailGuruNip">-</p>
+              </div>
+            </div>
+
+            <div class="teacher-detail-grid">
+              <div class="teacher-detail-item">
+                <span>Jenis Guru</span>
+
+                <strong>
+                  <span class="class-badge class-blue" id="detailGuruType"
+                    >-</span
+                  >
+                </strong>
+              </div>
+
+              <div class="teacher-detail-item">
+                <span>Mata Pelajaran</span>
+
+                <strong id="detailGuruSubject">-</strong>
+              </div>
+
+              <div class="teacher-detail-item">
+                <span>Jenis Kelamin</span>
+
+                <strong id="detailGuruGender">-</strong>
+              </div>
+
+              <div class="teacher-detail-item">
+                <span>No. HP</span>
+
+                <strong id="detailGuruPhone">-</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-modal-footer">
+          <button class="secondary-btn" id="closeGuruDetailFooterBtn">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================
+     GURU ACCOUNT MODAL
+========================== -->
+
+    <div class="student-modal" id="guruAccountModal">
+      <div class="modal-overlay" id="closeGuruAccountModal"></div>
+
+      <div class="student-modal-content">
+        <div class="student-modal-header">
+          <div>
+            <h3>Kelola Akun Login</h3>
+
+            <p>Ubah username dan password guru</p>
+          </div>
+
+          <button class="modal-close" id="closeGuruAccountModalBtn">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="student-modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nama Guru</label>
+              <input
+                type="text"
+                id="accountGuruName"
+                readonly
+                placeholder="Nama guru"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Role</label>
+              <select id="accountGuruRole">
+                <option value="guru">Guru Biasa</option>
+                <option value="wali_kelas">Wali Kelas</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Username</label>
+              <input
+                type="text"
+                id="accountGuruUsername"
+                placeholder="Masukkan username"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                id="accountGuruPassword"
+                placeholder="Masukkan password baru"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Konfirmasi Password</label>
+              <input
+                type="password"
+                id="accountGuruPasswordConfirm"
+                placeholder="Konfirmasi password"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="student-modal-footer">
+          <button class="secondary-btn" id="cancelGuruAccountModal">
+            Batal
+          </button>
+          <button class="primary-btn" id="saveGuruAccountBtn">
+            Simpan Akun
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global JS -->
+    <script type="module" src="../assets/js/app.js"></script>
+
+    <!-- Guru JS -->
+    <script type="module" src="../assets/js/pages/guru.js"></script>
+  </body>
+</html>

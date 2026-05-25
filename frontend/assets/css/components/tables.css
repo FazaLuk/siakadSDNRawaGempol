@@ -1,0 +1,717 @@
+/* =========================
+   TABLE CONTAINER
+========================== */
+
+.table-container {
+  background: var(--white-color);
+
+  border-radius: var(--radius-lg);
+
+  padding: 24px;
+
+  box-shadow: var(--shadow-sm);
+
+  border: 1px solid #f1f5f9;
+}
+
+/* =========================
+   TABLE HEADER
+========================== */
+
+.table-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 24px;
+
+  gap: 16px;
+}
+
+/* =========================
+   TITLE
+========================== */
+
+.table-title h5 {
+  margin: 0;
+
+  font-weight: 700;
+}
+
+.table-title p {
+  margin: 4px 0 0;
+
+  font-size: 14px;
+
+  color: var(--text-light);
+}
+
+/* =========================
+   SEARCH
+========================== */
+
+.table-search {
+  width: 300px;
+
+  position: relative;
+}
+
+.table-search input {
+  width: 100%;
+
+  height: 46px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--border-color);
+
+  padding: 0 16px;
+
+  outline: none;
+
+  transition: var(--transition);
+}
+
+.table-search input:focus {
+  border-color: var(--primary-color);
+}
+
+/* =========================
+   TABLE
+========================== */
+
+.custom-table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+/* =========================
+   TABLE HEAD
+========================== */
+
+.custom-table thead {
+  background: #f8fafc;
+}
+
+.custom-table th {
+  padding: 16px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: var(--text-light);
+}
+
+/* =========================
+   TABLE BODY
+========================== */
+
+.custom-table td {
+  padding: 18px 16px;
+
+  border-bottom: 1px solid #f1f5f9;
+
+  font-size: 14px;
+}
+
+/* =========================
+   HOVER
+========================== */
+
+.custom-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* =========================
+   BADGE
+========================== */
+
+.status-badge {
+  padding: 6px 12px;
+
+  border-radius: 30px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.badge-success {
+  background: #dcfce7;
+
+  color: #16a34a;
+}
+
+.badge-warning {
+  background: #fef3c7;
+
+  color: #d97706;
+}
+
+.badge-info {
+  background: #dbeafe;
+
+  color: #2563eb;
+}
+
+.badge-danger {
+  background: #fee2e2;
+
+  color: #dc2626;
+}
+
+/* =========================
+   ACTION BUTTON
+========================== */
+
+.action-btn {
+  width: 38px;
+
+  height: 38px;
+
+  border-radius: 10px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: none;
+
+  transition: var(--transition);
+}
+
+.btn-edit {
+  background: #dbeafe;
+
+  color: #2563eb;
+}
+
+.btn-delete {
+  background: #fee2e2;
+
+  color: #dc2626;
+}
+
+.action-btn:hover {
+  transform: scale(1.05);
+}
+
+/* =========================
+   PAGINATION
+========================== */
+
+.table-pagination {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 24px;
+}
+
+/* =========================
+   PAGINATION BUTTON
+========================== */
+
+.pagination-btn {
+  width: 40px;
+
+  height: 40px;
+
+  border-radius: 10px;
+
+  border: 1px solid var(--border-color);
+
+  background: var(--white-color);
+
+  transition: var(--transition);
+}
+
+.pagination-btn.active {
+  background: var(--primary-color);
+
+  color: var(--white-color);
+
+  border-color: var(--primary-color);
+}
+
+/* =========================
+   AVATAR
+========================== */
+
+.student-avatar {
+  width: 52px;
+
+  height: 52px;
+
+  border-radius: 50%;
+
+  background: #eff6ff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 22px;
+
+  color: var(--primary-color);
+}
+
+/* =========================
+   CLASS BADGE
+========================== */
+
+.class-badge {
+  padding: 8px 14px;
+
+  border-radius: 12px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.class-blue {
+  background: #dbeafe;
+
+  color: #2563eb;
+}
+
+/* =========================
+   ROLE BADGE
+========================== */
+
+.role-badge {
+  padding: 8px 14px;
+
+  border-radius: 12px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  display: inline-flex;
+
+  align-items: center;
+}
+
+.role-wali {
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+.role-guru {
+  background: #f3f4f6;
+
+  color: #4b5563;
+}
+
+.role-admin {
+  background: #ede9fe;
+
+  color: #6d28d9;
+}
+
+.password-mask {
+  font-family: inherit;
+
+  letter-spacing: 2px;
+
+  color: var(--text-light);
+}
+
+/* =========================
+   GENDER
+========================== */
+
+.gender-info {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+/* =========================
+   INCOME
+========================== */
+
+.income-badge {
+  padding: 8px 14px;
+
+  border-radius: 12px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.income-orange {
+  background: #ffedd5;
+
+  color: #ea580c;
+}
+
+/* =========================
+   ACTION
+========================== */
+
+.table-action {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+/* =========================
+   VIEW BUTTON
+========================== */
+
+.btn-view {
+  background: #dbeafe;
+
+  color: #2563eb;
+}
+
+/* =========================
+   TABLE RESPONSIVE
+========================== */
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* =========================
+   ACTION BUTTON
+========================== */
+
+.action-btn {
+  width: 42px;
+
+  height: 42px;
+
+  border-radius: 12px;
+
+  border: none;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  transition: all 0.25s ease;
+
+  font-size: 16px;
+}
+
+/* =========================
+   VIEW
+========================== */
+
+.btn-view {
+  background: #dbeafe;
+
+  color: #2563eb;
+}
+
+.btn-view:hover {
+  background: #2563eb;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+/* =========================
+   EDIT
+========================== */
+
+.btn-edit {
+  background: #fef3c7;
+
+  color: #d97706;
+}
+
+.btn-edit:hover {
+  background: #d97706;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+/* =========================
+   DELETE
+========================== */
+
+.btn-delete {
+  background: #fee2e2;
+
+  color: #dc2626;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+/* =========================
+   GENDER ICON
+========================== */
+
+.gender-male-icon {
+  color: #2563eb;
+
+  font-size: 18px;
+}
+
+.gender-female-icon {
+  color: #ec4899;
+
+  font-size: 18px;
+}
+
+/* =========================
+   TABLE TOP
+========================== */
+
+.table-top {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 24px;
+}
+
+/* =========================
+   TITLE
+========================== */
+
+.table-top h4 {
+  margin: 0;
+
+  font-size: 24px;
+
+  font-weight: 700;
+}
+
+.table-top p {
+  margin: 6px 0 0;
+
+  color: var(--text-light);
+}
+
+/* =========================
+   EXPORT BUTTON
+========================== */
+
+.export-btn {
+  height: 48px;
+
+  padding: 0 18px;
+
+  border-radius: 14px;
+
+  border: 1px solid var(--border-color);
+
+  background: var(--white-color);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  font-weight: 600;
+
+  transition: var(--transition);
+}
+
+.export-btn:hover {
+  background: #f8fafc;
+}
+
+/* =========================
+   TABLE HEAD
+========================== */
+
+.custom-table thead {
+  background: #f8fafc;
+}
+
+/* =========================
+   TH CONTENT
+========================== */
+
+.th-content {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+/* =========================
+   TH ICON
+========================== */
+
+.th-content i {
+  font-size: 12px;
+
+  color: var(--text-light);
+}
+
+/* =========================
+   ROW
+========================== */
+
+.custom-table tbody tr {
+  transition: var(--transition);
+}
+
+/* =========================
+   ROW HOVER
+========================== */
+
+.custom-table tbody tr:hover {
+  background: #f8fafc;
+
+  transform: scale(1.002);
+}
+
+/* =========================
+   TD
+========================== */
+
+.custom-table td {
+  vertical-align: middle;
+}
+
+/* =========================
+   PAGINATION
+========================== */
+
+.table-pagination {
+  margin-top: 28px;
+}
+/* =========================
+   PAGINATION
+========================== */
+
+.table-pagination {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 28px;
+}
+
+/* =========================
+   BUTTON
+========================== */
+
+.pagination-btn {
+  width: 42px;
+
+  height: 42px;
+
+  border-radius: 12px;
+
+  border: 1px solid #e2e8f0;
+
+  background: white;
+
+  font-weight: 600;
+
+  transition: var(--transition);
+}
+
+/* =========================
+   HOVER
+========================== */
+
+.pagination-btn:hover {
+  background: #eff6ff;
+
+  color: #2563eb;
+}
+
+/* =========================
+   ACTIVE
+========================== */
+
+.pagination-btn.active {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+
+  color: white;
+
+  border: none;
+}
+
+/* =========================
+   TABLE ACTION
+========================== */
+
+.table-top-action {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+/* =========================
+   ADD BUTTON
+========================== */
+
+.add-btn {
+  height: 48px;
+
+  padding: 0 20px;
+
+  border-radius: 14px;
+
+  border: none;
+
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+
+  color: white;
+
+  font-weight: 600;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  transition: var(--transition);
+}
+
+/* HOVER */
+.add-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+}

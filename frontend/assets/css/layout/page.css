@@ -1,0 +1,531 @@
+/* =========================
+   FILTER SECTION
+========================== */
+
+.filter-section {
+  background: var(--white-color);
+
+  border-radius: var(--radius-lg);
+
+  padding: 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 24px;
+
+  box-shadow: var(--shadow-sm);
+
+  border: 1px solid #f1f5f9;
+}
+
+/* =========================
+   SEARCH
+========================== */
+
+.filter-search {
+  flex: 1;
+
+  height: 52px;
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 18px;
+}
+
+.filter-search i {
+  color: var(--text-light);
+}
+
+.filter-search input {
+  flex: 1;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+}
+
+/* =========================
+   SELECT
+========================== */
+
+.filter-select {
+  min-width: 220px;
+
+  height: 52px;
+
+  border-radius: 14px;
+
+  border: 1px solid var(--border-color);
+
+  padding: 0 16px;
+
+  background: var(--white-color);
+}
+
+/* =========================
+   RESET BUTTON
+========================== */
+
+.filter-reset-btn {
+  height: 52px;
+
+  padding: 0 18px;
+
+  border-radius: 14px;
+
+  border: 1px solid var(--border-color);
+
+  background: var(--white-color);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+/* =========================
+   CONTENT
+========================== */
+
+.content {
+  padding: 32px;
+}
+/* =========================
+   FILTER SELECT
+========================== */
+
+.filter-select {
+  min-width: 220px;
+
+  height: 56px;
+
+  padding: 0 18px;
+
+  border-radius: 16px;
+
+  border: 1px solid #e2e8f0;
+
+  background: white;
+
+  font-size: 15px;
+
+  font-weight: 500;
+
+  color: var(--text-color);
+
+  outline: none;
+
+  transition: var(--transition);
+
+  cursor: pointer;
+}
+
+/* =========================
+   HOVER
+========================== */
+
+.filter-select:hover {
+  border-color: #cbd5e1;
+}
+
+/* =========================
+   FOCUS
+========================== */
+
+.filter-select:focus {
+  border-color: #2563eb;
+
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+/* =========================
+   FILTER SECTION
+========================== */
+
+.filter-section {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  flex-wrap: wrap;
+}
+
+/* =========================
+   MODAL
+========================== */
+
+.student-modal {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: none;
+}
+
+/* ACTIVE */
+.student-modal.show {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+/* =========================
+   OVERLAY
+========================== */
+
+.modal-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background: rgba(15, 23, 42, 0.45);
+
+  backdrop-filter: blur(4px);
+}
+
+/* =========================
+   CONTENT
+========================== */
+
+.student-modal-content {
+  position: relative;
+
+  width: 100%;
+
+  max-width: 760px;
+
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 32px;
+
+  z-index: 10;
+
+  animation: modalFade 0.25s ease;
+}
+
+/* =========================
+   ANIMATION
+========================== */
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   MODAL HEADER
+========================== */
+
+.student-modal-header {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  margin-bottom: 28px;
+}
+
+.student-modal-header h3 {
+  font-size: 28px;
+
+  font-weight: 700;
+
+  margin-bottom: 6px;
+
+  color: #0f172a;
+}
+
+.student-modal-header p {
+  color: #64748b;
+}
+
+/* =========================
+   CLOSE BUTTON
+========================== */
+
+.modal-close {
+  width: 44px;
+
+  height: 44px;
+
+  border-radius: 14px;
+
+  border: none;
+
+  background: #f1f5f9;
+
+  transition: 0.2s;
+}
+
+.modal-close:hover {
+  background: #e2e8f0;
+}
+
+/* =========================
+   FORM GRID
+========================== */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 22px;
+}
+
+/* =========================
+   FORM GROUP
+========================== */
+
+.form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.form-group label {
+  font-weight: 600;
+
+  color: #334155;
+}
+
+/* =========================
+   INPUT & SELECT
+========================== */
+
+.form-group input,
+.form-group select {
+  height: 54px;
+
+  border-radius: 16px;
+
+  border: 1px solid #e2e8f0;
+
+  padding: 0 18px;
+
+  outline: none;
+
+  transition: 0.2s;
+
+  font-size: 15px;
+}
+
+/* FOCUS */
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #2563eb;
+
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+/* =========================
+   FOOTER
+========================== */
+
+.student-modal-footer {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 14px;
+
+  margin-top: 32px;
+}
+
+/* =========================
+   BUTTON
+========================== */
+
+.primary-btn {
+  height: 52px;
+
+  padding: 0 24px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+
+  color: white;
+
+  font-weight: 600;
+}
+
+.secondary-btn {
+  height: 52px;
+
+  padding: 0 24px;
+
+  border-radius: 16px;
+
+  border: 1px solid #e2e8f0;
+
+  background: white;
+
+  font-weight: 600;
+}
+
+/* =========================
+   TEACHER DETAIL
+========================== */
+
+.teacher-detail {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 24px;
+}
+
+.teacher-detail-profile {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+}
+
+.teacher-detail-avatar {
+  width: 72px;
+
+  height: 72px;
+
+  border-radius: 50%;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 32px;
+
+  flex-shrink: 0;
+}
+
+.teacher-detail-profile h4 {
+  margin: 0;
+
+  font-size: 22px;
+
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.teacher-detail-profile p {
+  margin: 6px 0 0;
+
+  color: #64748b;
+
+  font-weight: 500;
+}
+
+.teacher-detail-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 16px;
+}
+
+.teacher-detail-item {
+  padding: 18px;
+
+  border-radius: 18px;
+
+  border: 1px solid #e2e8f0;
+
+  background: white;
+}
+
+.teacher-detail-item > span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 13px;
+
+  color: #64748b;
+
+  font-weight: 600;
+}
+
+.teacher-detail-item strong {
+  color: #0f172a;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+.teacher-detail-item .class-badge,
+.teacher-detail-item .income-badge {
+  display: inline-block;
+
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .student-modal-content {
+    max-height: calc(100vh - 32px);
+
+    overflow-y: auto;
+
+    margin: 16px;
+  }
+
+  .teacher-detail-profile {
+    align-items: flex-start;
+  }
+
+  .teacher-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

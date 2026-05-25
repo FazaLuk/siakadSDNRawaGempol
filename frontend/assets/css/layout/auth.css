@@ -1,0 +1,165 @@
+/* =========================
+   LOGIN PAGE
+========================== */
+
+.login-page {
+  min-height: 100vh;
+
+  background: #f8fafc;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 24px;
+}
+
+.login-shell {
+  width: 100%;
+
+  max-width: 420px;
+}
+
+.login-card {
+  background: var(--white-color);
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 18px;
+
+  box-shadow: var(--shadow-md);
+
+  padding: 32px;
+}
+
+.login-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 28px;
+}
+
+.login-brand-icon {
+  width: 54px;
+
+  height: 54px;
+
+  border-radius: 16px;
+
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+
+  color: var(--white-color);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 26px;
+}
+
+.login-brand h1 {
+  margin: 0;
+
+  font-size: 22px;
+
+  font-weight: 700;
+
+  color: var(--text-color);
+}
+
+.login-brand p {
+  margin: 4px 0 0;
+
+  color: var(--text-light);
+
+  font-size: 14px;
+}
+
+.login-form {
+  display: grid;
+
+  gap: 18px;
+}
+
+.login-form .form-group {
+  display: grid;
+
+  gap: 8px;
+}
+
+.login-form label {
+  color: var(--text-color);
+
+  font-weight: 600;
+
+  font-size: 14px;
+}
+
+.login-form input,
+.login-form select {
+  width: 100%;
+
+  height: 48px;
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 12px;
+
+  padding: 0 14px;
+
+  color: var(--text-color);
+
+  background: var(--white-color);
+
+  outline: none;
+}
+
+.login-form input:focus,
+.login-form select:focus {
+  border-color: var(--primary-color);
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.login-submit-btn {
+  height: 48px;
+
+  border-radius: 12px;
+
+  background: var(--primary-color);
+
+  color: var(--white-color);
+
+  font-weight: 700;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  transition: var(--transition);
+}
+
+.login-submit-btn:hover {
+  background: #1d4ed8;
+}
+
+@media (max-width: 576px) {
+  .login-card {
+    padding: 24px;
+  }
+
+  .login-brand h1 {
+    font-size: 19px;
+  }
+}
