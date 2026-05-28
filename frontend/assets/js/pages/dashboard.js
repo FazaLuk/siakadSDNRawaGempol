@@ -11,7 +11,7 @@ import {
   syncStudentData,
   syncStudentDataFromStorageValue,
 } from "../modules/students.js";
-import { guru, getHomeroomGuruData } from "../modules/guru.js";
+import { guru } from "../modules/guru.js";
 import { kelas, getActiveKelasData } from "../modules/kelas.js";
 import {
   getGuruInfo,
@@ -30,7 +30,6 @@ const totalStudentsLabel = document.getElementById("totalStudentsLabel");
 const totalStudentsExtra = document.getElementById("totalStudentsExtra");
 const totalGuru = document.getElementById("totalGuru");
 const totalActiveKelas = document.getElementById("totalActiveKelas");
-const totalHomeroomGuru = document.getElementById("totalHomeroomGuru");
 const maleStudents = document.getElementById("maleStudents");
 const femaleStudents = document.getElementById("femaleStudents");
 const dashboardTitle = document.getElementById("dashboardMainTitle");
@@ -49,7 +48,7 @@ const waliSummaryLevel = document.getElementById("waliSummaryLevel");
 const waliSummaryLabel = document.getElementById("waliSummaryLabel");
 const waliSummaryStatus = document.getElementById("waliSummaryStatus");
 
-const userRole = getRole();
+const ROLE_WALI_KELAS = "wali_kelas";
 let waliKelasClassId = resolveWaliKelasClassId();
 
 function setTextContent(element, value) {
@@ -65,12 +64,22 @@ function getPercent(value, total) {
 }
 
 function isWaliKelasDashboard() {
-  return userRole === "wali_kelas";
+  return getRole() === ROLE_WALI_KELAS;
 }
 
 function applyDashboardLayout() {
-  document.body.classList.toggle("dashboard-role-wali", isWaliKelasDashboard());
-  document.body.classList.toggle("dashboard-role-admin", !isWaliKelasDashboard());
+  const isWali = isWaliKelasDashboard();
+
+  document.body.classList.toggle("dashboard-role-wali", isWali);
+  document.body.classList.toggle("dashboard-role-admin", !isWali);
+
+  document.querySelectorAll(".dashboard-wali-only").forEach((element) => {
+    element.hidden = !isWali;
+  });
+
+  document.querySelectorAll(".dashboard-admin-only").forEach((element) => {
+    element.hidden = isWali;
+  });
 }
 
 function getStudentGenderCount(gender, sourceStudents) {
@@ -158,11 +167,7 @@ function updateWaliDashboardDetails(visibleKelas, visibleStudents) {
   renderGenderChart(maleCount, femaleCount);
 }
 
-function updateAdminDashboardDetails(
-  visibleStudents,
-  activeKelas,
-  homeroomGuru,
-) {
+function updateAdminDashboardDetails(visibleStudents, activeKelas) {
   setTextContent(totalStudentsLabel, "Total Siswa");
   setTextContent(totalStudentsExtra, "Data siswa tersimpan");
   setTextContent(studentChartTitle, "Statistik Siswa");
@@ -173,7 +178,6 @@ function updateAdminDashboardDetails(
 
   setTextContent(totalGuru, guru.length);
   setTextContent(totalActiveKelas, activeKelas.length);
-  setTextContent(totalHomeroomGuru, homeroomGuru.length);
   destroyGenderChart();
 }
 
@@ -186,7 +190,6 @@ function renderDashboard() {
   const activeKelas = getActiveKelasData().filter((item) =>
     visibleKelas.some((kelasItem) => Number(kelasItem.id) === Number(item.id)),
   );
-  const homeroomGuru = getHomeroomGuruData();
   const maleStudentCount = getStudentGenderCount(
     "Laki-laki",
     isWaliKelasDashboard() ? visibleStudents : students,
@@ -219,7 +222,7 @@ function renderDashboard() {
       dashboardDescription,
       "Ringkasan informasi penting sekolah dan data akademik yang dirancang agar mudah dibaca dan dapat diakses dengan cepat.",
     );
-    updateAdminDashboardDetails(visibleStudents, activeKelas, homeroomGuru);
+    updateAdminDashboardDetails(visibleStudents, activeKelas);
   }
 
   setTextContent(totalStudents, visibleStudents.length);

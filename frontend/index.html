@@ -32,8 +32,15 @@
       <aside class="sidebar">
         <div class="sidebar-top">
           <!-- Logo -->
-          <div class="sidebar-header">
-            <h4>SIAKAD</h4>
+          <div class="sidebar-logo">
+            <div class="logo-icon">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <div>
+              <h4>SIAKAD SD</h4>
+              <p>Rawa Gempol</p>
+            </div>
           </div>
 
           <!-- Menu -->
@@ -53,14 +60,6 @@
             </li>
 
             <li>
-              <a href="./pages/siswa.html">
-                <i class="bi bi-people"></i>
-
-                <span>Data Siswa</span>
-              </a>
-            </li>
-
-            <li>
               <a href="./pages/kelas.html">
                 <i class="bi bi-building-fill"></i>
 
@@ -69,10 +68,18 @@
             </li>
 
             <li>
+              <a href="./pages/siswa.html">
+                <i class="bi bi-people-fill"></i>
+
+                <span>Data Siswa</span>
+              </a>
+            </li>
+
+            <li>
               <a href="./pages/nilai.html">
                 <i class="bi bi-journal-text"></i>
 
-                <span>Nilai</span>
+                <span>Data Nilai</span>
               </a>
             </li>
 
@@ -80,13 +87,13 @@
               <a href="./pages/kehadiran.html">
                 <i class="bi bi-calendar-check"></i>
 
-                <span>Kehadiran</span>
+                <span>Data Kehadiran</span>
               </a>
             </li>
 
             <li>
               <a href="./pages/spk-bantuan.html">
-                <i class="bi bi-award"></i>
+                <i class="bi bi-gift"></i>
 
                 <span>SPK Bantuan</span>
               </a>
@@ -94,7 +101,7 @@
 
             <li>
               <a href="./pages/laporan.html">
-                <i class="bi bi-file-earmark-bar-graph"></i>
+                <i class="bi bi-file-earmark-text"></i>
 
                 <span>Laporan</span>
               </a>
@@ -102,17 +109,22 @@
           </ul>
         </div>
 
-        <div class="sidebar-footer">
+        <div class="sidebar-bottom">
+          <div class="sidebar-profile">
+            <div class="sidebar-profile-avatar">
+              <i class="bi bi-person-fill"></i>
+            </div>
+
+            <div>
+              <h5>Admin Sekolah</h5>
+              <p>Administrator</p>
+            </div>
+          </div>
+
           <button class="sidebar-logout-btn" type="button" data-logout>
             <i class="bi bi-box-arrow-right"></i>
 
             Logout
-          </button>
-
-          <button class="btn btn-light sidebar-close-btn" type="button">
-            <i class="bi bi-chevron-left"></i>
-
-            Tutup Sidebar
           </button>
         </div>
       </aside>
@@ -180,8 +192,8 @@
           <!-- STATISTIC -->
           <div class="row g-4 dashboard-stats-row">
             <!-- CARD 1 -->
-            <div class="col-md-6 col-xl-3">
-              <div class="stat-card stat-card-modern stat-card-wali">
+            <div class="col-md-6 col-xl-4">
+              <div class="stat-card stat-card-modern">
                 <div class="stat-card-left">
                   <div class="stat-icon icon-blue">
                     <i class="bi bi-people-fill"></i>
@@ -201,7 +213,7 @@
             </div>
 
             <!-- CARD 2 (Admin) -->
-            <div class="col-md-6 col-xl-3 dashboard-admin-only">
+            <div class="col-md-6 col-xl-4 dashboard-admin-only">
               <div class="stat-card stat-card-modern">
                 <div class="stat-card-left">
                   <div class="stat-icon icon-green">
@@ -220,7 +232,7 @@
             </div>
 
             <!-- CARD 3 (Admin) -->
-            <div class="col-md-6 col-xl-3 dashboard-admin-only">
+            <div class="col-md-6 col-xl-4 dashboard-admin-only">
               <div class="stat-card stat-card-modern">
                 <div class="stat-card-left">
                   <div class="stat-icon icon-orange">
@@ -233,25 +245,6 @@
                     <h3 id="totalActiveKelas">0</h3>
 
                     <div class="stat-extra">Kelas berstatus aktif</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- CARD 4 (Admin) -->
-            <div class="col-md-6 col-xl-3 dashboard-admin-only">
-              <div class="stat-card stat-card-modern">
-                <div class="stat-card-left">
-                  <div class="stat-icon icon-purple">
-                    <i class="bi bi-clipboard2-check-fill"></i>
-                  </div>
-
-                  <div class="stat-info">
-                    <p>Total Wali Kelas</p>
-
-                    <h3 id="totalHomeroomGuru">0</h3>
-
-                    <div class="stat-extra">Guru dengan tugas wali kelas</div>
                   </div>
                 </div>
               </div>

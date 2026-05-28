@@ -317,3 +317,240 @@ body.sidebar-collapsed .sidebar {
 body.sidebar-collapsed .main-content {
   margin-left: 0;
 }
+
+/* =========================
+   MODERN COMPACT SIDEBAR
+========================== */
+
+.sidebar {
+  width: var(--sidebar-width);
+  z-index: 999;
+  padding: 20px 16px;
+  background: #ffffff;
+  border-right: 1px solid #e8eef7;
+  box-shadow: 10px 0 30px rgba(15, 23, 42, 0.04);
+}
+
+.sidebar-top {
+  min-width: 0;
+}
+
+.sidebar-header,
+.sidebar-logo {
+  min-height: 52px;
+  margin-bottom: 22px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.sidebar-header h4,
+.sidebar-logo h4 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.sidebar-logo {
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  font-size: 22px;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.16);
+}
+
+.sidebar-logo p {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.sidebar-menu {
+  display: grid;
+  gap: 6px;
+}
+
+.sidebar-menu li {
+  margin-bottom: 0;
+}
+
+.sidebar-menu a {
+  height: 46px;
+  gap: 12px;
+  padding: 0 12px;
+  border-radius: 13px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.sidebar-menu a i {
+  width: 22px;
+  min-width: 22px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.sidebar-menu a:hover {
+  background: #f1f6ff;
+  color: #1d4ed8;
+  transform: translateX(2px);
+}
+
+.sidebar-menu a.active {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
+}
+
+.sidebar-bottom,
+.sidebar-footer {
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid #eef2f7;
+}
+
+.sidebar-profile {
+  padding: 12px;
+  gap: 10px;
+  border-radius: 16px;
+  border: 1px solid #e8eef7;
+  background: #f8fafc;
+}
+
+.sidebar-profile-avatar {
+  width: 42px;
+  height: 42px;
+  font-size: 19px;
+  flex: 0 0 42px;
+}
+
+.sidebar-profile h5 {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.sidebar-profile p {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.sidebar-logout-btn,
+.sidebar-close-btn {
+  min-height: 44px;
+  border-radius: 13px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sidebar-logout-btn {
+  background: #fff1f2;
+  border: 1px solid #ffe4e6;
+}
+
+.sidebar-logout-btn i,
+.sidebar-close-btn i {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.main-content {
+  margin-left: var(--sidebar-width);
+}
+
+body.sidebar-collapsed .sidebar {
+  width: var(--sidebar-collapse-width);
+  padding-left: 12px;
+  padding-right: 12px;
+  transform: none;
+}
+
+body.sidebar-collapsed .main-content {
+  margin-left: var(--sidebar-collapse-width);
+}
+
+body.sidebar-collapsed .sidebar-header,
+body.sidebar-collapsed .sidebar-logo {
+  justify-content: center;
+  padding: 0;
+}
+
+body.sidebar-collapsed .sidebar-header h4 {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: transparent;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.16);
+}
+
+body.sidebar-collapsed .sidebar-header h4::first-letter {
+  color: #ffffff;
+}
+
+body.sidebar-collapsed .sidebar-logo h4,
+body.sidebar-collapsed .sidebar-logo p,
+body.sidebar-collapsed .sidebar-menu span,
+body.sidebar-collapsed .sidebar-profile h5,
+body.sidebar-collapsed .sidebar-profile p,
+body.sidebar-collapsed .sidebar-logout-btn,
+body.sidebar-collapsed .sidebar-close-btn {
+  font-size: 0;
+}
+
+body.sidebar-collapsed .sidebar-logo > div:not(.logo-icon),
+body.sidebar-collapsed .sidebar-profile > div:not(.sidebar-profile-avatar) {
+  display: none;
+}
+
+body.sidebar-collapsed .sidebar-menu a {
+  justify-content: center;
+  width: 48px;
+  padding: 0;
+  margin: 0 auto;
+}
+
+body.sidebar-collapsed .sidebar-menu a:hover {
+  transform: none;
+}
+
+body.sidebar-collapsed .sidebar-profile {
+  justify-content: center;
+  padding: 8px;
+}
+
+body.sidebar-collapsed .sidebar-profile-avatar {
+  width: 40px;
+  height: 40px;
+  flex-basis: 40px;
+}
+
+body.sidebar-collapsed .sidebar-logout-btn,
+body.sidebar-collapsed .sidebar-close-btn {
+  width: 48px;
+  min-height: 44px;
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+body.sidebar-collapsed .sidebar-logout-btn i,
+body.sidebar-collapsed .sidebar-close-btn i {
+  font-size: 18px;
+}
