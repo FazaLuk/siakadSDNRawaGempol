@@ -1,71 +1,22 @@
+import {
+  getAllStudents,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+} from "../services/studentService.js";
+
 /* =========================
    STORAGE CONFIG
 ========================== */
 
-export const STUDENT_STORAGE_KEY = "studentData";
 export const STUDENT_DATA_CHANGED_EVENT = "studentDataChanged";
-
-/* =========================
-   LOAD DATA
-========================== */
-
-function getStoredStudentData() {
-  if (typeof localStorage === "undefined") return [];
-
-  try {
-    const storedData = localStorage.getItem(STUDENT_STORAGE_KEY);
-
-    // kalau belum ada data
-    if (!storedData) return [];
-
-    const parsedData = JSON.parse(storedData);
-
-    // pastikan array
-    if (!Array.isArray(parsedData)) return [];
-
-    return parsedData;
-  } catch (error) {
-    console.error("Gagal memuat data siswa dari localStorage", error);
-
-    return [];
-  }
-}
-
-function parseStudentData(value) {
-  try {
-    if (!value) return [];
-
-    const parsedData = JSON.parse(value);
-
-    if (!Array.isArray(parsedData)) return [];
-
-    return parsedData;
-  } catch (error) {
-    console.error("Gagal membaca sinkronisasi data siswa", error);
-
-    return [];
-  }
-}
-
-/* =========================
-   STATE
-========================== */
-
-export const students = getStoredStudentData();
+export const students = [];
 
 export function syncStudentData(nextStudents) {
   if (!Array.isArray(nextStudents)) return;
 
   students.splice(0, students.length, ...nextStudents);
 }
-
-export function syncStudentDataFromStorageValue(value) {
-  syncStudentData(parseStudentData(value));
-}
-
-/* =========================
-   RELATION HELPER
-========================== */
 
 export function getKelasIdByName(kelasData, className) {
   const selectedKelas = kelasData.find((item) => item.name === className);
@@ -83,7 +34,7 @@ export function getStudentClassId(student, kelasData) {
 
 export function getStudentClassName(student, kelasData) {
   const selectedKelas = kelasData.find(
-    (item) => item.id === getStudentClassId(student, kelasData)
+    (item) => item.id === getStudentClassId(student, kelasData),
   );
 
   return selectedKelas ? selectedKelas.name : student.class || "-";
@@ -91,7 +42,7 @@ export function getStudentClassName(student, kelasData) {
 
 export function countStudentsByClassId(studentData, kelasData, classId) {
   return studentData.filter(
-    (student) => getStudentClassId(student, kelasData) === Number(classId)
+    (student) => getStudentClassId(student, kelasData) === Number(classId),
   ).length;
 }
 
@@ -112,24 +63,68 @@ export function migrateStudentClassIds(studentData, kelasData) {
   return hasMigratedData;
 }
 
-/* =========================
-   SAVE DATA
-========================== */
+export async function loadStudentData() {
+  const data = await getAllStudents();
+  students.splice(0, students.length, ...data);
+  notifyStudentDataChanged();
+  return students;
+}
+
+export async function createStudentData(studentData) {
+  const created = await createStudent(studentData);
+
+  if (Array.isArray(created) && created[0]) {
+    students.unshift(created[0]);
+    notifyStudentDataChanged();
+    return created[0];
+  }
+
+  return null;
+}
+
+export async function updateStudentData(id, studentData) {
+  const updated = await updateStudent(id, studentData);
+
+  if (Array.isArray(updated) && updated[0]) {
+    const index = students.findIndex((item) => item.id === id);
+
+    if (index !== -1) {
+      Object.assign(students[index], updated[0]);
+    } else {
+      students.unshift(updated[0]);
+    }
+
+    notifyStudentDataChanged();
+    return updated[0];
+  }
+
+  return null;
+}
+
+export async function deleteStudentData(id) {
+  await deleteStudent(id);
+
+  const index = students.findIndex((item) => item.id === id);
+
+  if (index !== -1) {
+    students.splice(index, 1);
+  }
+
+  notifyStudentDataChanged();
+}
 
 export function saveStudentData() {
-  if (typeof localStorage === "undefined") return;
+  notifyStudentDataChanged();
+}
 
-  try {
-    localStorage.setItem(STUDENT_STORAGE_KEY, JSON.stringify(students));
+function notifyStudentDataChanged() {
+  if (typeof window === "undefined") return;
 
-    window.dispatchEvent(
-      new CustomEvent(STUDENT_DATA_CHANGED_EVENT, {
-        detail: {
-          students,
-        },
-      })
-    );
-  } catch (error) {
-    console.error("Gagal menyimpan data siswa ke localStorage", error);
-  }
+  window.dispatchEvent(
+    new CustomEvent(STUDENT_DATA_CHANGED_EVENT, {
+      detail: {
+        students,
+      },
+    }),
+  );
 }

@@ -1,8 +1,16 @@
+import {
+  getAllGuru,
+  createGuru,
+  updateGuru,
+  deleteGuru,
+} from "../services/guruService.js";
+
 /* =========================
    STORAGE CONFIG
 ========================== */
 
-export const GURU_STORAGE_KEY = "guruData";
+export const GURU_DATA_CHANGED_EVENT = "guruDataChanged";
+export const guru = [];
 
 export function isHomeroomGuru(item) {
   return (
@@ -18,70 +26,55 @@ function resolveGuruRole(item) {
   return item?.role || "guru";
 }
 
-/* =========================
-   LOAD DATA
-========================== */
-
-function getStoredGuruData() {
-  if (typeof localStorage === "undefined") return [];
-
-  try {
-    const storedData = localStorage.getItem(GURU_STORAGE_KEY);
-
-    // kalau belum ada data
-    if (!storedData) return [];
-
-    const parsedData = JSON.parse(storedData);
-
-    // pastikan array
-    if (!Array.isArray(parsedData)) return [];
-
-    // cleanup legacy field
-    const normalizedData = parsedData.map((item) => {
-      if (!Object.prototype.hasOwnProperty.call(item, "homeroomClass")) {
-        item = { ...item };
-      } else {
-        const { homeroomClass, ...guruData } = item;
-        item = guruData;
-      }
-
-      item.role = resolveGuruRole(item);
-      item.username =
-        item.username ||
-        item.userName ||
-        item.loginUsername ||
-        item.accountUsername ||
-        "";
-      item.password =
-        item.password ||
-        item.pass ||
-        item.loginPassword ||
-        item.accountPassword ||
-        "";
-
-      return item;
-    });
-
-    // update storage jika ada legacy data atau missing fields
-    localStorage.setItem(GURU_STORAGE_KEY, JSON.stringify(normalizedData));
-
-    return normalizedData;
-  } catch (error) {
-    console.error("Gagal memuat data guru dari localStorage", error);
-
-    return [];
-  }
+export async function loadGuruData() {
+  const data = await getAllGuru();
+  guru.splice(0, guru.length, ...data);
+  notifyGuruDataChanged();
+  return guru;
 }
 
-/* =========================
-   STATE
-========================== */
+export async function createGuruData(guruData) {
+  const created = await createGuru(guruData);
 
-export const guru = getStoredGuruData();
+  if (Array.isArray(created) && created[0]) {
+    guru.unshift(created[0]);
+    notifyGuruDataChanged();
+    return created[0];
+  }
 
-/* =========================
-   HELPER
-========================== */
+  return null;
+}
+
+export async function updateGuruData(id, guruData) {
+  const updated = await updateGuru(id, guruData);
+
+  if (Array.isArray(updated) && updated[0]) {
+    const index = guru.findIndex((item) => item.id === id);
+
+    if (index !== -1) {
+      Object.assign(guru[index], updated[0]);
+    } else {
+      guru.unshift(updated[0]);
+    }
+
+    notifyGuruDataChanged();
+    return updated[0];
+  }
+
+  return null;
+}
+
+export async function deleteGuruData(id) {
+  await deleteGuru(id);
+
+  const index = guru.findIndex((item) => item.id === id);
+
+  if (index !== -1) {
+    guru.splice(index, 1);
+  }
+
+  notifyGuruDataChanged();
+}
 
 export function getHomeroomGuruData() {
   return guru.filter(isHomeroomGuru);
@@ -91,7 +84,10 @@ export function getGuruByUsername(username) {
   const normalizedUsername = username.trim().toLowerCase();
 
   return guru.find(
-    (item) => String(item.username || "").trim().toLowerCase() === normalizedUsername,
+    (item) =>
+      String(item.username || "")
+        .trim()
+        .toLowerCase() === normalizedUsername,
   );
 }
 
@@ -99,16 +95,18 @@ export function getGuruById(id) {
   return guru.find((item) => item.id === id);
 }
 
-/* =========================
-   SAVE DATA
-========================== */
-
 export function saveGuruData() {
-  if (typeof localStorage === "undefined") return;
+  notifyGuruDataChanged();
+}
 
-  try {
-    localStorage.setItem(GURU_STORAGE_KEY, JSON.stringify(guru));
-  } catch (error) {
-    console.error("Gagal menyimpan data guru ke localStorage", error);
-  }
+function notifyGuruDataChanged() {
+  if (typeof window === "undefined") return;
+
+  window.dispatchEvent(
+    new CustomEvent(GURU_DATA_CHANGED_EVENT, {
+      detail: {
+        guru,
+      },
+    }),
+  );
 }

@@ -4,19 +4,18 @@
 
 import { getKelasIdByGuruId, linkGuruToKelasByName } from "./kelas.js";
 import { getGuruById } from "./guru.js";
+import { authenticateGuru } from "../services/authService.js";
 
 export const AUTH_STORAGE_KEY = "siakad_auth";
 export const ROLE_STORAGE_KEY = "siakad_role";
 export const LEGACY_ROLE_STORAGE_KEY = "role";
 export const HOMEROOM_CLASS_STORAGE_KEY = "siakad_homeroom_class";
 export const LEGACY_HOMEROOM_CLASS_STORAGE_KEY = "kelas_id";
-export const GURU_ID_STORAGE_KEY = "siakad_guru_id";
-export const GURU_NAME_STORAGE_KEY = "siakad_guru_name";
+export const GURU_ID_STORAGE_KEY = "guru_id";
+export const GURU_NAME_STORAGE_KEY = "guru_name";
 export const LEGACY_GURU_NAME_STORAGE_KEY = "guru_nama";
 
 const AUTH_SESSION_VALUE = "logged_in";
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "admin123";
 
 function getLoginPath() {
   return window.location.pathname.includes("/pages/")
@@ -33,10 +32,7 @@ export function getRole() {
   if (role) return role;
 
   const legacyRole = localStorage.getItem(LEGACY_ROLE_STORAGE_KEY);
-  if (legacyRole) {
-    localStorage.setItem(ROLE_STORAGE_KEY, legacyRole);
-    return legacyRole;
-  }
+  if (legacyRole) return legacyRole;
 
   return "admin";
 }
@@ -51,21 +47,13 @@ export function getWaliKelasClassId() {
       localStorage.getItem(LEGACY_HOMEROOM_CLASS_STORAGE_KEY),
   );
 
-  if (Number.isFinite(storedClassId) && storedClassId > 0) {
-    if (!localStorage.getItem(HOMEROOM_CLASS_STORAGE_KEY)) {
-      localStorage.setItem(HOMEROOM_CLASS_STORAGE_KEY, String(storedClassId));
-    }
-    return storedClassId;
-  }
+  if (Number.isFinite(storedClassId) && storedClassId > 0) return storedClassId;
 
   return null;
 }
 
 export function setWaliKelasClassId(classId) {
-  if (!classId) return;
-
-  localStorage.setItem(HOMEROOM_CLASS_STORAGE_KEY, String(classId));
-  localStorage.setItem(LEGACY_HOMEROOM_CLASS_STORAGE_KEY, String(classId));
+  return classId || null;
 }
 
 export { getKelasIdByGuruId };
@@ -88,45 +76,33 @@ export function resolveWaliKelasClassId() {
   const classFromGuru =
     getKelasIdByGuruId(guruId) ||
     (guru ? linkGuruToKelasByName(guru) : null);
-  const classId = classFromGuru || getWaliKelasClassId();
-
-  if (classId) {
-    setWaliKelasClassId(classId);
-  }
-
-  return classId || null;
+  return classFromGuru || getWaliKelasClassId();
 }
 
 export function isWaliKelasUser() {
   return getRole() === "wali_kelas" && Boolean(resolveWaliKelasClassId());
 }
 
-export function login(username, password, role = "admin") {
-  let isValidCredential = false;
+export async function login(username, password, role = "admin") {
+  const guru = await authenticateGuru(username, password, role);
 
-  if (role === "admin") {
-    isValidCredential =
-      username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
-  }
-
-  if (!isValidCredential) return false;
+  if (!guru) return false;
 
   localStorage.setItem(AUTH_STORAGE_KEY, AUTH_SESSION_VALUE);
-  setRole(role);
+  setRole(guru.role || role);
+  setGuruInfo(guru.id, guru.name);
 
   return true;
 }
 
 export function loginAsGuruUser(guruId, guruName, guruRole, classId = null) {
+  void classId;
+
   if (!guruRole || guruRole === "guru") return false;
 
   localStorage.setItem(AUTH_STORAGE_KEY, AUTH_SESSION_VALUE);
   setRole(guruRole);
   setGuruInfo(guruId, guruName);
-
-  if (guruRole === "wali_kelas" && classId) {
-    setWaliKelasClassId(classId);
-  }
 
   return true;
 }
@@ -137,15 +113,18 @@ export function setGuruInfo(guruId, guruName) {
   }
   if (guruName) {
     localStorage.setItem(GURU_NAME_STORAGE_KEY, guruName);
-    localStorage.setItem(LEGACY_GURU_NAME_STORAGE_KEY, guruName);
   }
 }
 
 export function getGuruInfo() {
-  const guruId = Number(localStorage.getItem(GURU_ID_STORAGE_KEY)) || null;
+  const guruId =
+    Number(localStorage.getItem(GURU_ID_STORAGE_KEY)) ||
+    Number(localStorage.getItem("siakad_guru_id")) ||
+    null;
   const guruName =
     localStorage.getItem(GURU_NAME_STORAGE_KEY) ||
     localStorage.getItem(LEGACY_GURU_NAME_STORAGE_KEY) ||
+    localStorage.getItem("siakad_guru_name") ||
     null;
 
   return { guruId, guruName };
@@ -154,10 +133,13 @@ export function getGuruInfo() {
 export function logout() {
   localStorage.removeItem(AUTH_STORAGE_KEY);
   localStorage.removeItem(ROLE_STORAGE_KEY);
+  localStorage.removeItem("role");
   localStorage.removeItem(HOMEROOM_CLASS_STORAGE_KEY);
   localStorage.removeItem(LEGACY_HOMEROOM_CLASS_STORAGE_KEY);
   localStorage.removeItem(GURU_ID_STORAGE_KEY);
   localStorage.removeItem(GURU_NAME_STORAGE_KEY);
+  localStorage.removeItem("siakad_guru_id");
+  localStorage.removeItem("siakad_guru_name");
   localStorage.removeItem(LEGACY_GURU_NAME_STORAGE_KEY);
   window.location.href = getLoginPath();
 }

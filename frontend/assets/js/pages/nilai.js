@@ -2,19 +2,26 @@ console.log("Nilai page connected");
 
 import {
   nilai,
-  saveNilaiData,
   calculateAverageScore,
+  loadNilaiData,
+  createNilaiData,
+  updateNilaiData,
+  deleteNilaiData,
 } from "../modules/nilai.js";
 import {
   students,
   getStudentClassId,
   migrateStudentClassIds,
   saveStudentData,
+  loadStudentData,
 } from "../modules/students.js";
-import { guru } from "../modules/guru.js";
-import { kelas } from "../modules/kelas.js";
+import { guru, loadGuruData } from "../modules/guru.js";
+import { kelas, loadKelasData } from "../modules/kelas.js";
 import { showToast } from "../modules/toast.js";
-import { getRole, isWaliKelasUser, resolveWaliKelasClassId } from "../modules/auth.js";
+import {
+  isWaliKelasUser,
+  resolveWaliKelasClassId,
+} from "../modules/auth.js";
 import { isHomeroomGuru } from "../modules/guru.js";
 
 /* =========================
@@ -75,7 +82,6 @@ function getKelasByGuruId(guruId) {
   return kelas.find((item) => Number(item.guruId) === Number(guruId));
 }
 
-const userRole = getRole();
 const waliKelasClassId = resolveWaliKelasClassId();
 
 function isWaliKelasRole() {
@@ -103,7 +109,6 @@ function getAllowedHomeroomGuru() {
     (item) => getKelasByGuruId(item.id)?.id === waliKelasClassId,
   );
 }
-
 
 function getHomeroomGuruData() {
   return guru.filter(
@@ -233,9 +238,11 @@ function migrateLegacyStudentClassData() {
 }
 
 function getAverageScores() {
-  return nilai.filter(isAllowedNilaiItem).map((item) =>
-    calculateAverageScore(item.taskScore, item.utsScore, item.uasScore),
-  );
+  return nilai
+    .filter(isAllowedNilaiItem)
+    .map((item) =>
+      calculateAverageScore(item.taskScore, item.utsScore, item.uasScore),
+    );
 }
 
 function formatScore(value) {
@@ -467,7 +474,7 @@ nilaiStudentSearch.addEventListener("input", () => {
    SAVE NILAI
 ========================== */
 
-saveNilaiBtn.addEventListener("click", () => {
+saveNilaiBtn.addEventListener("click", async () => {
   const selectedStudent = getStudentById(nilaiStudentId.value);
   const selectedGuru = getGuruById(nilaiGuruId.value);
   const selectedKelas = getSelectedHomeroomClass();
@@ -541,23 +548,24 @@ saveNilaiBtn.addEventListener("click", () => {
     return;
   }
 
-  if (isEditMode) {
-    const selectedNilai = nilai.find((item) => item.id === selectedNilaiId);
-
-    if (selectedNilai) {
-      Object.assign(selectedNilai, nilaiData);
+  try {
+    if (isEditMode) {
+      await updateNilaiData(selectedNilaiId, nilaiData);
+    } else {
+      await createNilaiData(nilaiData);
+      currentPage = 1;
     }
-  } else {
-    const newNilai = {
-      id: Math.max(0, ...nilai.map((item) => item.id)) + 1,
-      ...nilaiData,
-    };
-
-    nilai.unshift(newNilai);
-    currentPage = 1;
+  } catch (error) {
+    showToast({
+      type: "error",
+      title: "Gagal menyimpan data nilai",
+      message:
+        error?.message ||
+        "Terjadi kesalahan saat menyimpan data nilai ke server.",
+    });
+    return;
   }
 
-  saveNilaiData();
   renderSummaryCards();
   filterNilai();
   hideModal();
@@ -768,16 +776,26 @@ function deleteNilai(id) {
       {
         label: "Hapus",
         variant: "primary",
-        onClick: () => {
+        onClick: async () => {
           const currentIndex = nilai.findIndex((item) => item.id === id);
 
           if (currentIndex === -1) return;
           if (!isAllowedNilaiItem(nilai[currentIndex])) return;
 
-          nilai.splice(currentIndex, 1);
-          saveNilaiData();
-          renderSummaryCards();
-          filterNilai();
+          try {
+            await deleteNilaiData(id);
+            renderSummaryCards();
+            filterNilai();
+          } catch (error) {
+            showToast({
+              type: "error",
+              title: "Gagal menghapus data nilai",
+              message:
+                error?.message ||
+                "Terjadi kesalahan saat menghapus data nilai dari server.",
+            });
+            return;
+          }
 
           showToast({
             type: "success",
@@ -790,9 +808,25 @@ function deleteNilai(id) {
   });
 }
 
-migrateLegacyStudentClassData();
-renderFilterDropdowns();
-renderFormDropdowns();
-renderSummaryCards();
-filterNilai();
-console.log("Nilai rendered");
+async function initNilaiPage() {
+  await loadGuruData();
+  await loadKelasData();
+  await loadStudentData();
+  await loadNilaiData();
+
+  migrateLegacyStudentClassData();
+  renderFilterDropdowns();
+  renderFormDropdowns();
+  renderSummaryCards();
+  filterNilai();
+  console.log("Nilai rendered");
+}
+
+initNilaiPage().catch((error) => {
+  console.error("Gagal memuat halaman nilai", error);
+  showToast({
+    type: "error",
+    title: "Gagal memuat data nilai",
+    message: error?.message || "Data nilai gagal dimuat dari server.",
+  });
+});

@@ -1,42 +1,66 @@
+import {
+  getAllNilai,
+  createNilai,
+  updateNilai,
+  deleteNilai,
+} from "../services/nilaiService.js";
+
 /* =========================
    STORAGE CONFIG
 ========================== */
 
-export const NILAI_STORAGE_KEY = "nilaiData";
+export const NILAI_DATA_CHANGED_EVENT = "nilaiDataChanged";
+export const nilai = [];
 
-/* =========================
-   LOAD DATA
-========================== */
-
-function getStoredNilaiData() {
-  if (typeof localStorage === "undefined") return [];
-
-  try {
-    const storedData = localStorage.getItem(NILAI_STORAGE_KEY);
-
-    if (!storedData) return [];
-
-    const parsedData = JSON.parse(storedData);
-
-    if (!Array.isArray(parsedData)) return [];
-
-    return parsedData;
-  } catch (error) {
-    console.error("Gagal memuat data nilai dari localStorage", error);
-
-    return [];
-  }
+export async function loadNilaiData() {
+  const data = await getAllNilai();
+  nilai.splice(0, nilai.length, ...data);
+  notifyNilaiDataChanged();
+  return nilai;
 }
 
-/* =========================
-   STATE
-========================== */
+export async function createNilaiData(nilaiData) {
+  const created = await createNilai(nilaiData);
 
-export const nilai = getStoredNilaiData();
+  if (Array.isArray(created) && created[0]) {
+    nilai.unshift(created[0]);
+    notifyNilaiDataChanged();
+    return created[0];
+  }
 
-/* =========================
-   HELPER
-========================== */
+  return null;
+}
+
+export async function updateNilaiData(id, nilaiData) {
+  const updated = await updateNilai(id, nilaiData);
+
+  if (Array.isArray(updated) && updated[0]) {
+    const index = nilai.findIndex((item) => item.id === id);
+
+    if (index !== -1) {
+      Object.assign(nilai[index], updated[0]);
+    } else {
+      nilai.unshift(updated[0]);
+    }
+
+    notifyNilaiDataChanged();
+    return updated[0];
+  }
+
+  return null;
+}
+
+export async function deleteNilaiData(id) {
+  await deleteNilai(id);
+
+  const index = nilai.findIndex((item) => item.id === id);
+
+  if (index !== -1) {
+    nilai.splice(index, 1);
+  }
+
+  notifyNilaiDataChanged();
+}
 
 export function calculateAverageScore(taskScore, utsScore, uasScore) {
   const total = Number(taskScore) + Number(utsScore) + Number(uasScore);
@@ -44,16 +68,18 @@ export function calculateAverageScore(taskScore, utsScore, uasScore) {
   return Math.round((total / 3) * 100) / 100;
 }
 
-/* =========================
-   SAVE DATA
-========================== */
-
 export function saveNilaiData() {
-  if (typeof localStorage === "undefined") return;
+  notifyNilaiDataChanged();
+}
 
-  try {
-    localStorage.setItem(NILAI_STORAGE_KEY, JSON.stringify(nilai));
-  } catch (error) {
-    console.error("Gagal menyimpan data nilai ke localStorage", error);
-  }
+function notifyNilaiDataChanged() {
+  if (typeof window === "undefined") return;
+
+  window.dispatchEvent(
+    new CustomEvent(NILAI_DATA_CHANGED_EVENT, {
+      detail: {
+        nilai,
+      },
+    }),
+  );
 }

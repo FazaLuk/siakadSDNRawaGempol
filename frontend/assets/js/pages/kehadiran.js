@@ -1,15 +1,25 @@
 console.log("Kehadiran page connected");
 
-import { kehadiran, saveKehadiranData } from "../modules/kehadiran.js";
+import {
+  kehadiran,
+  loadKehadiranData,
+  createKehadiranData,
+  updateKehadiranData,
+  deleteKehadiranData,
+} from "../modules/kehadiran.js";
 import {
   students,
   getStudentClassId,
   migrateStudentClassIds,
   saveStudentData,
+  loadStudentData,
 } from "../modules/students.js";
-import { kelas } from "../modules/kelas.js";
+import { kelas, loadKelasData } from "../modules/kelas.js";
 import { showToast } from "../modules/toast.js";
-import { getRole, isWaliKelasUser, resolveWaliKelasClassId } from "../modules/auth.js";
+import {
+  isWaliKelasUser,
+  resolveWaliKelasClassId,
+} from "../modules/auth.js";
 
 /* =========================
    ELEMENT
@@ -71,7 +81,6 @@ function getKelasById(classId) {
   return kelas.find((item) => item.id === Number(classId));
 }
 
-const userRole = getRole();
 const waliKelasClassId = resolveWaliKelasClassId();
 
 function isWaliKelasRole() {
@@ -163,7 +172,9 @@ function renderSummaryCards() {
   const permissionOrSick = visibleKehadiran.filter(
     (item) => item.status === "Izin" || item.status === "Sakit",
   ).length;
-  const absent = visibleKehadiran.filter((item) => item.status === "Alpha").length;
+  const absent = visibleKehadiran.filter(
+    (item) => item.status === "Alpha",
+  ).length;
 
   totalAbsensiCard.textContent = visibleKehadiran.length;
   hadirHariIniCard.textContent = presentToday;
@@ -302,7 +313,7 @@ kehadiranStudentSearch.addEventListener("input", () => {
    SAVE KEHADIRAN
 ========================== */
 
-saveKehadiranBtn.addEventListener("click", () => {
+saveKehadiranBtn.addEventListener("click", async () => {
   const selectedStudent = getStudentById(kehadiranStudentId.value);
   const selectedClass = getKelasById(kehadiranClassId.value);
   const studentClassId = selectedStudent
@@ -355,25 +366,24 @@ saveKehadiranBtn.addEventListener("click", () => {
     return;
   }
 
-  if (isEditMode) {
-    const selectedKehadiran = kehadiran.find(
-      (item) => item.id === selectedKehadiranId,
-    );
-
-    if (selectedKehadiran) {
-      Object.assign(selectedKehadiran, kehadiranData);
+  try {
+    if (isEditMode) {
+      await updateKehadiranData(selectedKehadiranId, kehadiranData);
+    } else {
+      await createKehadiranData(kehadiranData);
+      currentPage = 1;
     }
-  } else {
-    const newKehadiran = {
-      id: Math.max(0, ...kehadiran.map((item) => item.id)) + 1,
-      ...kehadiranData,
-    };
-
-    kehadiran.unshift(newKehadiran);
-    currentPage = 1;
+  } catch (error) {
+    showToast({
+      type: "error",
+      title: "Gagal menyimpan data absensi",
+      message:
+        error?.message ||
+        "Terjadi kesalahan saat menyimpan data absensi ke server.",
+    });
+    return;
   }
 
-  saveKehadiranData();
   renderSummaryCards();
   filterKehadiran();
   hideModal();
@@ -581,16 +591,26 @@ function deleteKehadiran(id) {
       {
         label: "Hapus",
         variant: "primary",
-        onClick: () => {
+        onClick: async () => {
           const currentIndex = kehadiran.findIndex((item) => item.id === id);
 
           if (currentIndex === -1) return;
           if (!isAllowedKehadiranItem(kehadiran[currentIndex])) return;
 
-          kehadiran.splice(currentIndex, 1);
-          saveKehadiranData();
-          renderSummaryCards();
-          filterKehadiran();
+          try {
+            await deleteKehadiranData(id);
+            renderSummaryCards();
+            filterKehadiran();
+          } catch (error) {
+            showToast({
+              type: "error",
+              title: "Gagal menghapus data absensi",
+              message:
+                error?.message ||
+                "Terjadi kesalahan saat menghapus data absensi dari server.",
+            });
+            return;
+          }
 
           showToast({
             type: "success",
@@ -603,10 +623,25 @@ function deleteKehadiran(id) {
   });
 }
 
-migrateLegacyStudentClassData();
-renderClassDropdowns();
-updateStudentControlState();
-renderStudentDropdown();
-renderSummaryCards();
-filterKehadiran();
-console.log("Kehadiran rendered");
+async function initKehadiranPage() {
+  await loadKelasData();
+  await loadStudentData();
+  await loadKehadiranData();
+
+  migrateLegacyStudentClassData();
+  renderClassDropdowns();
+  updateStudentControlState();
+  renderStudentDropdown();
+  renderSummaryCards();
+  filterKehadiran();
+  console.log("Kehadiran rendered");
+}
+
+initKehadiranPage().catch((error) => {
+  console.error("Gagal memuat halaman kehadiran", error);
+  showToast({
+    type: "error",
+    title: "Gagal memuat data absensi",
+    message: error?.message || "Data absensi gagal dimuat dari server.",
+  });
+});

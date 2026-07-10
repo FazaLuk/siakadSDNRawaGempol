@@ -5,8 +5,12 @@ import {
   getStudentClassId,
   getStudentClassName,
   migrateStudentClassIds,
+  loadStudentData,
+  createStudentData,
+  updateStudentData,
+  deleteStudentData,
 } from "../modules/students.js";
-import { getActiveKelasData } from "../modules/kelas.js";
+import { getActiveKelasData, loadKelasData } from "../modules/kelas.js";
 import {
   calculateBantuanScore,
   getBantuanStatus,
@@ -17,7 +21,6 @@ import {
   isWaliKelasUser,
   resolveWaliKelasClassId,
 } from "../modules/auth.js";
-import { KELAS_STORAGE_KEY } from "../modules/kelas.js";
 
 /* =========================
    ELEMENT
@@ -408,26 +411,11 @@ function refreshSiswaPageData() {
   filterStudents();
 }
 
-window.addEventListener("pageshow", () => {
-  refreshSiswaPageData();
-});
-
-window.addEventListener("storage", (event) => {
-  if (event.key !== KELAS_STORAGE_KEY) return;
-
-  refreshSiswaPageData();
-});
-
-syncActiveKelas();
-renderClassDropdowns();
-migrateLegacyStudentClassData();
-renderSummaryCards();
-filterStudents();
 /* =========================
    SAVE STUDENT
 ========================== */
 
-saveStudentBtn.addEventListener("click", () => {
+saveStudentBtn.addEventListener("click", async () => {
   /* VALIDATION */
   if (
     !studentName.value ||
@@ -484,27 +472,24 @@ saveStudentBtn.addEventListener("click", () => {
 
   const isEditMode = Boolean(selectedStudentId);
 
-  if (isEditMode) {
-    const selectedStudent = students.find(
-      (student) => student.id === selectedStudentId,
-    );
-
-    if (selectedStudent) {
-      Object.assign(selectedStudent, studentData);
+  try {
+    if (isEditMode) {
+      await updateStudentData(selectedStudentId, studentData);
+    } else {
+      await createStudentData(studentData);
+      currentPage = 1;
     }
-  } else {
-    /* NEW DATA */
-    const newStudent = {
-      id: Math.max(0, ...students.map((student) => student.id)) + 1,
-      ...studentData,
-    };
-
-    /* PUSH DATA */
-    students.unshift(newStudent);
-    currentPage = 1;
+  } catch (error) {
+    showToast({
+      type: "error",
+      title: "Gagal menyimpan data siswa",
+      message:
+        error?.message ||
+        "Terjadi kesalahan saat menyimpan data siswa ke server.",
+    });
+    return;
   }
 
-  saveStudentData();
   renderSummaryCards();
 
   /* RE-RENDER */
@@ -661,12 +646,6 @@ function renderStudents(data) {
 }
 
 /* =========================
-   INIT
-========================== */
-
-filterStudents();
-
-/* =========================
    RENDER PAGINATION
 ========================== */
 
@@ -820,16 +799,26 @@ function deleteStudent(id) {
       {
         label: "Hapus",
         variant: "primary",
-        onClick: () => {
+        onClick: async () => {
           const currentIndex = students.findIndex(
             (student) => student.id === id,
           );
 
           if (currentIndex === -1) return;
 
-          students.splice(currentIndex, 1);
-          saveStudentData();
-          renderSummaryCards();
+          try {
+            await deleteStudentData(id);
+            renderSummaryCards();
+          } catch (error) {
+            showToast({
+              type: "error",
+              title: "Gagal menghapus data siswa",
+              message:
+                error?.message ||
+                "Terjadi kesalahan saat menghapus data siswa dari server.",
+            });
+            return;
+          }
 
           /* RENDER ULANG */
           filterStudents();
@@ -887,4 +876,24 @@ function filterStudents() {
   renderStudents(filtered);
   renderPagination(filtered);
 }
-console.log("Students rendered");
+
+async function initSiswaPage() {
+  await loadKelasData();
+  await loadStudentData();
+
+  syncActiveKelas();
+  renderClassDropdowns();
+  migrateLegacyStudentClassData();
+  renderSummaryCards();
+  filterStudents();
+  console.log("Students rendered");
+}
+
+initSiswaPage().catch((error) => {
+  console.error("Gagal memuat halaman siswa", error);
+  showToast({
+    type: "error",
+    title: "Gagal memuat data siswa",
+    message: error?.message || "Data siswa gagal dimuat dari server.",
+  });
+});

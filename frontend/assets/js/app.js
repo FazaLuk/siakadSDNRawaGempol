@@ -11,14 +11,25 @@ import {
   resolveWaliKelasClassId,
   getRole,
 } from "./modules/auth.js";
+import { loadGuruData } from "./modules/guru.js";
+import { loadKelasData } from "./modules/kelas.js";
 
 requireAuth();
 
-if (getRole() === "wali_kelas") {
-  resolveWaliKelasClassId();
-}
+try {
+  await loadGuruData();
+  await loadKelasData();
 
-enforceRoleAccess();
-initAuthControls();
+  if (getRole() === "wali_kelas") {
+    resolveWaliKelasClassId();
+  }
+
+  enforceRoleAccess();
+  initAuthControls();
+} catch (error) {
+  console.error("Gagal memuat data global", error);
+  enforceRoleAccess();
+  initAuthControls();
+}
 
 console.log("Global app connected");

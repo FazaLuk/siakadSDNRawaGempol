@@ -1,16 +1,23 @@
 console.log("Kelas page connected");
-import { kelas, saveKelasData, getActiveKelasData } from "../modules/kelas.js";
-import { getHomeroomGuruData } from "../modules/guru.js";
+import {
+  kelas,
+  saveKelasData,
+  getActiveKelasData,
+  createKelasData,
+  deleteKelasData,
+  loadKelasData,
+  updateKelasData,
+} from "../modules/kelas.js";
+import { getHomeroomGuruData, loadGuruData } from "../modules/guru.js";
 import {
   students,
   saveStudentData,
-  STUDENT_STORAGE_KEY,
   STUDENT_DATA_CHANGED_EVENT,
   countStudentsByClassId,
   getStudentClassId,
   migrateStudentClassIds,
   syncStudentData,
-  syncStudentDataFromStorageValue,
+  loadStudentData,
 } from "../modules/students.js";
 import { showToast } from "../modules/toast.js";
 
@@ -26,7 +33,9 @@ const resetFilterBtn = document.querySelector(".filter-reset-btn");
 const pagination = document.getElementById("pagination");
 const kelasModal = document.getElementById("kelasModal");
 const kelasModalTitle = kelasModal.querySelector(".student-modal-header h3");
-const kelasModalDescription = kelasModal.querySelector(".student-modal-header p");
+const kelasModalDescription = kelasModal.querySelector(
+  ".student-modal-header p",
+);
 const openKelasModal = document.getElementById("openKelasModal");
 const closeModal = document.getElementById("closeModal");
 const closeModalBtn = document.getElementById("closeModalBtn");
@@ -46,7 +55,7 @@ const rataSiswaKelasCard = document.getElementById("rataSiswaKelasCard");
 let currentPage = 1;
 let selectedKelasId = null;
 const rowsPerPage = 5;
-const homeroomGuru = getHomeroomGuruData();
+let homeroomGuru = [];
 
 /* =========================
    HELPER
@@ -61,7 +70,7 @@ function isDuplicateKelasName(value, ignoredId = null) {
 
   return kelas.some(
     (item) =>
-      item.id !== ignoredId && normalizeText(item.name) === normalizedValue
+      item.id !== ignoredId && normalizeText(item.name) === normalizedValue,
   );
 }
 
@@ -97,7 +106,7 @@ function renderSummaryCards() {
 
 function getStudentUsingKelas(kelasId) {
   return students.find(
-    (student) => getStudentClassId(student, kelas) === Number(kelasId)
+    (student) => getStudentClassId(student, kelas) === Number(kelasId),
   );
 }
 
@@ -113,10 +122,13 @@ function migrateLegacyHomeroomTeacherData() {
     if (item.guruId || !item.homeroomTeacher) return;
 
     const selectedGuru = homeroomGuru.find(
-      (guruItem) => guruItem.name === item.homeroomTeacher
+      (guruItem) => guruItem.name === item.homeroomTeacher,
     );
 
-    if (!selectedGuru || isGuruAssignedToAnotherKelas(selectedGuru.id, item.id)) {
+    if (
+      !selectedGuru ||
+      isGuruAssignedToAnotherKelas(selectedGuru.id, item.id)
+    ) {
       return;
     }
 
@@ -140,13 +152,13 @@ function isGuruAssignedToAnotherKelas(guruId, ignoredId = null) {
   if (!guruId) return false;
 
   return kelas.some(
-    (item) => item.id !== ignoredId && Number(item.guruId) === Number(guruId)
+    (item) => item.id !== ignoredId && Number(item.guruId) === Number(guruId),
   );
 }
 
 function getAvailableHomeroomGuru(ignoredId = null) {
   return homeroomGuru.filter(
-    (item) => !isGuruAssignedToAnotherKelas(item.id, ignoredId)
+    (item) => !isGuruAssignedToAnotherKelas(item.id, ignoredId),
   );
 }
 
@@ -227,7 +239,7 @@ cancelModal.addEventListener("click", hideModal);
    SAVE KELAS
 ========================== */
 
-saveKelasBtn.addEventListener("click", () => {
+saveKelasBtn.addEventListener("click", async () => {
   if (
     !kelasName.value.trim() ||
     !kelasLevel.value ||
@@ -238,7 +250,8 @@ saveKelasBtn.addEventListener("click", () => {
     showToast({
       type: "error",
       title: "Data belum lengkap",
-      message: "Nama kelas, tingkat, label, wali kelas, dan status wajib diisi.",
+      message:
+        "Nama kelas, tingkat, label, wali kelas, dan status wajib diisi.",
     });
 
     return;
@@ -274,25 +287,24 @@ saveKelasBtn.addEventListener("click", () => {
 
   const isEditMode = Boolean(selectedKelasId);
 
-  if (isEditMode) {
-    const selectedKelas = kelas.find((item) => item.id === selectedKelasId);
-
-    if (selectedKelas) {
-      Object.assign(selectedKelas, kelasData);
-      delete selectedKelas.homeroomTeacher;
-      delete selectedKelas.studentCount;
+  try {
+    if (isEditMode) {
+      await updateKelasData(selectedKelasId, kelasData);
+    } else {
+      await createKelasData(kelasData);
+      currentPage = 1;
     }
-  } else {
-    const newKelas = {
-      id: Math.max(0, ...kelas.map((item) => item.id)) + 1,
-      ...kelasData,
-    };
-
-    kelas.unshift(newKelas);
-    currentPage = 1;
+  } catch (error) {
+    showToast({
+      type: "error",
+      title: "Gagal menyimpan data kelas",
+      message:
+        error?.message ||
+        "Terjadi kesalahan saat menyimpan data kelas ke server.",
+    });
+    return;
   }
 
-  saveKelasData();
   renderSummaryCards();
   filterKelas();
   hideModal();
@@ -460,14 +472,6 @@ function handleStudentDataChange(nextStudents) {
   renderCurrentKelasTable();
 }
 
-window.addEventListener("storage", (event) => {
-  if (event.key !== STUDENT_STORAGE_KEY) return;
-
-  syncStudentDataFromStorageValue(event.newValue);
-  renderSummaryCards();
-  renderCurrentKelasTable();
-});
-
 window.addEventListener(STUDENT_DATA_CHANGED_EVENT, (event) => {
   handleStudentDataChange(event.detail?.students);
 });
@@ -532,7 +536,7 @@ function deleteKelas(id) {
       {
         label: "Hapus",
         variant: "primary",
-        onClick: () => {
+        onClick: async () => {
           const currentIndex = kelas.findIndex((item) => item.id === id);
 
           if (currentIndex === -1) return;
@@ -549,10 +553,20 @@ function deleteKelas(id) {
             return;
           }
 
-          kelas.splice(currentIndex, 1);
-          saveKelasData();
-          renderSummaryCards();
-          filterKelas();
+          try {
+            await deleteKelasData(id);
+            renderSummaryCards();
+            filterKelas();
+          } catch (error) {
+            showToast({
+              type: "error",
+              title: "Gagal menghapus data kelas",
+              message:
+                error?.message ||
+                "Terjadi kesalahan saat menghapus data kelas dari server.",
+            });
+            return;
+          }
 
           showToast({
             type: "success",
@@ -565,8 +579,24 @@ function deleteKelas(id) {
   });
 }
 
-migrateLegacyHomeroomTeacherData();
-migrateLegacyStudentClassData();
-renderSummaryCards();
-filterKelas();
-console.log("Kelas rendered");
+async function initKelasPage() {
+  await loadGuruData();
+  await loadKelasData();
+  await loadStudentData();
+
+  homeroomGuru = getHomeroomGuruData();
+  migrateLegacyHomeroomTeacherData();
+  migrateLegacyStudentClassData();
+  renderSummaryCards();
+  filterKelas();
+  console.log("Kelas rendered");
+}
+
+initKelasPage().catch((error) => {
+  console.error("Gagal memuat halaman kelas", error);
+  showToast({
+    type: "error",
+    title: "Gagal memuat data kelas",
+    message: error?.message || "Data kelas gagal dimuat dari server.",
+  });
+});

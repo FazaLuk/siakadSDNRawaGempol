@@ -1,10 +1,8 @@
 import {
   isAuthenticated,
   login,
-  loginAsGuruUser,
-  resolveClassIdForGuru,
 } from "../modules/auth.js";
-import { getGuruByUsername, isHomeroomGuru } from "../modules/guru.js";
+import { findGuruByUsername } from "../services/authService.js";
 import { showToast } from "../modules/toast.js";
 
 const loginForm = document.getElementById("loginForm");
@@ -33,7 +31,7 @@ function getLoginErrorMessage(role, username, password, guru) {
     return "Password tidak sesuai dengan data guru.";
   }
 
-  if (!isHomeroomGuru(guru)) {
+  if (guru.role !== "wali_kelas") {
     return "Akun guru ini bukan wali kelas. Periksa role/jenis guru di Data Guru.";
   }
 
@@ -44,30 +42,33 @@ function getLoginErrorMessage(role, username, password, guru) {
   return "Login gagal. Pastikan guru sudah di-assign sebagai wali di Data Kelas.";
 }
 
-loginForm.addEventListener("submit", (event) => {
+loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const username = usernameInput.value.trim();
   const password = passwordInput.value.trim();
   const role = roleSelect.value;
 
-  let loginSuccess = false;
+  try {
+    if (!username || !password) {
+      showToast({
+        type: "warning",
+        title: "Login gagal",
+        message: "Username dan password wajib diisi.",
+      });
 
-  if (role === "wali_kelas") {
-    const guru = getGuruByUsername(username);
-
-    if (
-      guru &&
-      String(guru.password || "").trim() === password &&
-      isHomeroomGuru(guru) &&
-      String(guru.username || "").trim()
-    ) {
-      const classId = resolveClassIdForGuru(guru);
-
-      loginSuccess = loginAsGuruUser(guru.id, guru.name, "wali_kelas", classId);
+      return;
     }
 
-    if (!loginSuccess) {
+    const guru = await findGuruByUsername(username);
+
+    const canLogin =
+      guru &&
+      String(guru.password || "").trim() === password &&
+      String(guru.username || "").trim() &&
+      (role === "admin" ? guru.role === "admin" : guru.role === role);
+
+    if (!canLogin) {
       showToast({
         type: "warning",
         title: "Login gagal",
@@ -75,18 +76,24 @@ loginForm.addEventListener("submit", (event) => {
       });
       return;
     }
-  } else {
-    loginSuccess = login(username, password, role);
-  }
 
-  if (loginSuccess) {
-    window.location.href = "./index.html";
-    return;
-  }
+    const loginSuccess = await login(username, password, role);
 
-  showToast({
-    type: "warning",
-    title: "Login gagal",
-    message: getLoginErrorMessage(role, username, password, null),
-  });
+    if (loginSuccess) {
+      window.location.href = "./index.html";
+      return;
+    }
+
+    showToast({
+      type: "warning",
+      title: "Login gagal",
+      message: getLoginErrorMessage(role, username, password, null),
+    });
+  } catch (error) {
+    showToast({
+      type: "error",
+      title: "Login gagal",
+      message: error?.message || "Terjadi kesalahan saat login.",
+    });
+  }
 });

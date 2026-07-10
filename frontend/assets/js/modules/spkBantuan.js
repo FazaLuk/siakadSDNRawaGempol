@@ -1,9 +1,4 @@
-import {
-  getStudentClassName,
-  STUDENT_STORAGE_KEY,
-  students,
-  syncStudentDataFromStorageValue,
-} from "./students.js";
+import { getStudentClassName, students } from "./students.js";
 
 /* =========================
    SCORING CONFIG
@@ -80,12 +75,6 @@ export function getBantuanStatusBadge(status) {
   if (status === "Dipertimbangkan") return "badge-warning";
 
   return "badge-danger";
-}
-
-export function syncBantuanStudentData(event) {
-  if (event.key !== STUDENT_STORAGE_KEY) return;
-
-  syncStudentDataFromStorageValue(event.newValue);
 }
 
 export function getBantuanRanking(kelasData) {

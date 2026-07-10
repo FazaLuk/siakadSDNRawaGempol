@@ -1,7 +1,10 @@
 console.log("Laporan page connected");
 
-import { kelas } from "../modules/kelas.js";
-import { guru } from "../modules/guru.js";
+import { kelas, loadKelasData } from "../modules/kelas.js";
+import { guru, loadGuruData } from "../modules/guru.js";
+import { loadKehadiranData } from "../modules/kehadiran.js";
+import { loadNilaiData } from "../modules/nilai.js";
+import { loadStudentData } from "../modules/students.js";
 import { isWaliKelasUser, resolveWaliKelasClassId } from "../modules/auth.js";
 import {
   getAvailableSubjects,
@@ -894,9 +897,20 @@ printPreviewBtn.addEventListener("click", () => {
   window.print();
 });
 
-renderClassDropdown();
-renderSubjectDropdown();
-updateDynamicFilters();
-filterLaporan();
+async function initLaporanPage() {
+  await loadGuruData();
+  await loadKelasData();
+  await loadStudentData();
+  await loadNilaiData();
+  await loadKehadiranData();
 
-console.log("Laporan rendered");
+  renderClassDropdown();
+  renderSubjectDropdown();
+  updateDynamicFilters();
+  filterLaporan();
+  console.log("Laporan rendered");
+}
+
+initLaporanPage().catch((error) => {
+  console.error("Gagal memuat halaman laporan", error);
+});

@@ -1,11 +1,10 @@
 console.log("SPK Bantuan page connected");
 
-import { getActiveKelasData } from "../modules/kelas.js";
-import { getStudentClassId } from "../modules/students.js";
+import { getActiveKelasData, loadKelasData } from "../modules/kelas.js";
+import { getStudentClassId, loadStudentData } from "../modules/students.js";
 import {
   getBantuanRanking,
   getBantuanStatusBadge,
-  syncBantuanStudentData,
 } from "../modules/spkBantuan.js";
 
 /* =========================
@@ -25,7 +24,7 @@ const tidakPrioritasCount = document.getElementById("tidakPrioritasCount");
 
 let currentPage = 1;
 const rowsPerPage = 5;
-const activeKelas = getActiveKelasData();
+let activeKelas = [];
 
 /* =========================
    DROPDOWN
@@ -197,13 +196,16 @@ resetFilterBtn.addEventListener("click", () => {
   filterBantuan();
 });
 
-window.addEventListener("storage", (event) => {
-  syncBantuanStudentData(event);
-  currentPage = 1;
+async function initSpkBantuanPage() {
+  await loadKelasData();
+  await loadStudentData();
+
+  activeKelas = getActiveKelasData();
+  renderClassDropdown();
   filterBantuan();
+  console.log("SPK Bantuan rendered");
+}
+
+initSpkBantuanPage().catch((error) => {
+  console.error("Gagal memuat halaman SPK bantuan", error);
 });
-
-renderClassDropdown();
-filterBantuan();
-
-console.log("SPK Bantuan rendered");

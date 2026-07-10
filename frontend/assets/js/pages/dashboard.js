@@ -5,14 +5,13 @@ import {
 } from "../components/charts.js";
 import {
   students,
-  STUDENT_STORAGE_KEY,
   STUDENT_DATA_CHANGED_EVENT,
   countStudentsByClassId,
   syncStudentData,
-  syncStudentDataFromStorageValue,
+  loadStudentData,
 } from "../modules/students.js";
-import { guru } from "../modules/guru.js";
-import { kelas, getActiveKelasData } from "../modules/kelas.js";
+import { guru, loadGuruData } from "../modules/guru.js";
+import { kelas, getActiveKelasData, loadKelasData } from "../modules/kelas.js";
 import {
   getGuruInfo,
   getRole,
@@ -242,15 +241,18 @@ function handleStudentDataChange(nextStudents) {
   renderDashboard();
 }
 
-window.addEventListener("storage", (event) => {
-  if (event.key !== STUDENT_STORAGE_KEY) return;
-
-  syncStudentDataFromStorageValue(event.newValue);
-  renderDashboard();
-});
-
 window.addEventListener(STUDENT_DATA_CHANGED_EVENT, (event) => {
   handleStudentDataChange(event.detail?.students);
 });
 
-renderDashboard();
+async function initDashboardPage() {
+  await loadGuruData();
+  await loadKelasData();
+  await loadStudentData();
+
+  renderDashboard();
+}
+
+initDashboardPage().catch((error) => {
+  console.error("Gagal memuat dashboard", error);
+});

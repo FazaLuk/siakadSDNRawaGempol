@@ -1,5 +1,5 @@
 import { getGuruInfo, getRole, resolveWaliKelasClassId } from "../modules/auth.js";
-import { kelas } from "../modules/kelas.js";
+import { kelas, KELAS_DATA_CHANGED_EVENT } from "../modules/kelas.js";
 
 const sidebar = document.querySelector(".sidebar");
 const overlay = document.querySelector(".sidebar-overlay");
@@ -129,4 +129,5 @@ if (sidebar && toggleBtn) {
   });
 
   applyRoleMenuRules();
+  window.addEventListener(KELAS_DATA_CHANGED_EVENT, applyRoleMenuRules);
 }

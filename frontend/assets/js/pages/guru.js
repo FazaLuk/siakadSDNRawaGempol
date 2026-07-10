@@ -1,6 +1,14 @@
 console.log("Guru page connected");
-import { guru, isHomeroomGuru, saveGuruData } from "../modules/guru.js";
-import { kelas } from "../modules/kelas.js";
+import {
+  guru,
+  isHomeroomGuru,
+  saveGuruData,
+  loadGuruData,
+  createGuruData,
+  updateGuruData,
+  deleteGuruData,
+} from "../modules/guru.js";
+import { kelas, loadKelasData } from "../modules/kelas.js";
 import { showToast } from "../modules/toast.js";
 
 /* =========================
@@ -279,7 +287,7 @@ function editGuruAccount(id) {
   guruAccountModal.classList.add("show");
 }
 
-saveGuruAccountBtn.addEventListener("click", () => {
+saveGuruAccountBtn.addEventListener("click", async () => {
   if (
     !accountGuruUsername.value.trim() ||
     !accountGuruPassword.value ||
@@ -312,6 +320,29 @@ saveGuruAccountBtn.addEventListener("click", () => {
     selectedGuru.role = hasHomeroomRole(selectedGuru)
       ? "wali_kelas"
       : accountGuruRole.value || "guru";
+
+    try {
+      await updateGuruData(selectedGuruId, {
+        nip: selectedGuru.nip,
+        name: selectedGuru.name,
+        type: selectedGuru.type,
+        subject: selectedGuru.subject,
+        gender: selectedGuru.gender,
+        phone: selectedGuru.phone,
+        username: selectedGuru.username,
+        password: selectedGuru.password,
+        role: selectedGuru.role,
+      });
+    } catch (error) {
+      showToast({
+        type: "error",
+        title: "Gagal memperbarui akun",
+        message:
+          error?.message ||
+          "Terjadi kesalahan saat menyimpan akun guru ke server.",
+      });
+      return;
+    }
   }
 
   saveGuruData();
@@ -391,7 +422,7 @@ guruNip.addEventListener("input", () => {
    SAVE GURU
 ========================== */
 
-saveGuruBtn.addEventListener("click", () => {
+saveGuruBtn.addEventListener("click", async () => {
   const needsSubject = isSubjectTeacher(guruType.value);
 
   if (
@@ -454,19 +485,29 @@ saveGuruBtn.addEventListener("click", () => {
     role: resolvedRole,
   };
 
-  if (isEditMode) {
-    if (selectedGuru) {
-      Object.assign(selectedGuru, guruData);
-      delete selectedGuru.homeroomClass;
-    }
-  } else {
-    const newGuru = {
-      id: Math.max(0, ...guru.map((item) => item.id)) + 1,
-      ...guruData,
-    };
+  try {
+    if (isEditMode) {
+      if (selectedGuru) {
+        const updatedGuru = await updateGuruData(selectedGuruId, guruData);
 
-    guru.unshift(newGuru);
-    currentPage = 1;
+        if (updatedGuru) {
+          Object.assign(selectedGuru, updatedGuru);
+          delete selectedGuru.homeroomClass;
+        }
+      }
+    } else {
+      await createGuruData(guruData);
+      currentPage = 1;
+    }
+  } catch (error) {
+    showToast({
+      type: "error",
+      title: "Gagal menyimpan data guru",
+      message:
+        error?.message ||
+        "Terjadi kesalahan saat menyimpan data guru ke server.",
+    });
+    return;
   }
 
   saveGuruData();
@@ -626,8 +667,12 @@ function filterGuru() {
     const matchSearch =
       item.name.toLowerCase().includes(keyword) ||
       item.nip.toLowerCase().includes(keyword) ||
-      String(item.username || "").toLowerCase().includes(keyword) ||
-      String(item.role || "").toLowerCase().includes(keyword) ||
+      String(item.username || "")
+        .toLowerCase()
+        .includes(keyword) ||
+      String(item.role || "")
+        .toLowerCase()
+        .includes(keyword) ||
       getGuruAssignment(item).toLowerCase().includes(keyword);
 
     const matchType = !selectedType || item.type === selectedType;
@@ -741,7 +786,7 @@ function deleteGuru(id) {
       {
         label: "Hapus",
         variant: "primary",
-        onClick: () => {
+        onClick: async () => {
           const currentIndex = guru.findIndex((item) => item.id === id);
 
           if (currentIndex === -1) return;
@@ -758,10 +803,20 @@ function deleteGuru(id) {
             return;
           }
 
-          guru.splice(currentIndex, 1);
-          saveGuruData();
-          renderSummaryCards();
-          filterGuru();
+          try {
+            await deleteGuruData(id);
+            renderSummaryCards();
+            filterGuru();
+          } catch (error) {
+            showToast({
+              type: "error",
+              title: "Gagal menghapus data guru",
+              message:
+                error?.message ||
+                "Terjadi kesalahan saat menghapus data guru dari server.",
+            });
+            return;
+          }
 
           showToast({
             type: "success",
@@ -774,7 +829,14 @@ function deleteGuru(id) {
   });
 }
 
-migrateGuruClassRelationData();
-renderSummaryCards();
-filterGuru();
-console.log("Guru rendered");
+async function initGuruPage() {
+  await loadKelasData();
+  await loadGuruData();
+
+  migrateGuruClassRelationData();
+  renderSummaryCards();
+  filterGuru();
+  console.log("Guru rendered");
+}
+
+initGuruPage();
